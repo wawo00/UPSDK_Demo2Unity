@@ -201,8 +201,20 @@ public class TestAndroidCall : MonoBehaviour {
 		inited = true;
 		isInitSDK = true;
 		//init方法之前使用
-		PolyADSDK.setCustomerIdForAndroid (SystemInfo.deviceUniqueIdentifier);
-		PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_AUTO);
+		// PolyADSDK.setCustomerIdForAndroid (SystemInfo.deviceUniqueIdentifier);
+		UPConstant.UPAccessPrivacyInfoStatusEnum result = Polymer.UPSDK.getAccessPrivacyInfoStatus();
+		if (result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusUnkown
+			|| result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusFailed) {
+			// 如果没有询问过授权，先定位用户是否是欧盟地区
+			// isEuropeanUserCallback异步回调对象
+			UPSDK.isEuropeanUnionUser (new Action<bool, string>(isEuropeanUserCallback));
+		} else {
+			// 假定发行地区是海外
+			UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+		}
+			
+
+		//PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_AUTO);
 		Debug.Log ("---android id--"+SystemInfo.deviceUniqueIdentifier);
 	
 
@@ -216,6 +228,28 @@ public class TestAndroidCall : MonoBehaviour {
 		// 	text.text = tt;
 		// }
 	}
+
+	private void isEuropeanUserCallback(bool result, string msg) {
+		// result: true 表示欧盟地区用户，否则非欧盟地区用户
+		if (result) {
+			// 欧盟地区用户，进行授权询问
+			UPSDK.notifyAccessPrivacyInfoStatus (new Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> (accessPrivacyInforCallback));
+		} else {
+			// 非欧盟地区用户，直接初始化SDK
+			// 假定发行地区是海外
+			UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+		}
+	}
+
+	private void accessPrivacyInforCallback(UPConstant.UPAccessPrivacyInfoStatusEnum result, string msg) {
+		// result 用户授权的结果
+		// 不论结果如何，都要初始化sdk
+		// 假定发行地区是海外
+		UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+		// 打印日志
+		Debug.Log ("===> accessPrivacyInforCallback Event result: " + result + "," + msg);
+	}
+
 	private void showTextMessage(string msg){
 		Text textMsg = GameObject.Find ("ABText").GetComponent<Text> ();
 		if(isInitSDK){
