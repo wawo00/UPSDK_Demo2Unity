@@ -6,17 +6,20 @@ using Polymer;
 using System;
 using System.IO;
 
+
 using System.Text.RegularExpressions;
 
 
 public class TestAndroidCall : MonoBehaviour {
 
 	private bool inited;
-	private bool isInitSDK;
+
+	private bool TEST_AD = true;
 
 	// Use this for initialization
 	void Start () {
-		
+		//onButtonClick();
+		//onBtnExitAd_Click();
 	}
 	
 	// Update is called once per frame
@@ -28,75 +31,57 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//inter_aaa
 		//inter_ccc
-		Polymer.PolyADSDK.showIntersitialAd("inter_aaa");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.showIntersitialAd("inter_aaa");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
 	{
-		Polymer.PolyADSDK.showIntersitialAd("inter_ccc");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.showIntersitialAd("rewarded_video");
 	}
 
 	public void onBtnReward_aaa_Click()
 	{
-		Polymer.PolyADSDK.showRewardAd("aaa");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.showRewardAd("aaa");
 	}
 
 	public void onBtnBanner_Top_Click()
 	{
-		Polymer.PolyADSDK.showBannerAdAtTop("banner_aaa");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		//BannerAd
+		#if UNITY_ANDROID && !UNITY_EDITOR
+			UPSDK.showBannerAdAtTop("banner_aaa");
+		#else
+		UPSDK.showBannerAdAtTop("banner_aaa");
+		#endif
+
+		UPSDK.showBannerAdAtBottom("banner_bbb");
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-		Polymer.PolyADSDK.showBannerAdAtBottom("banner_bbb");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.removeBannerAdAt ("banner_bbb");
+		UPSDK.removeBannerAdAt ("banner_aaa");
+
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		Polymer.PolyADSDK.removeBannerAdAt ("banner_aaa");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.removeBannerAdAt ("banner_aaa");
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		Polymer.PolyADSDK.removeBannerAdAt ("banner_bbb");
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.removeBannerAdAt ("banner_bbb");
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		if(!isInitSDK){
-			showTextMessage("");
-		}
-		Polymer.PolyADSDK.setIntersitialLoadCallback ("inter_aaa", 
+		UPSDK.setIntersitialLoadCallback ("inter_aaa", 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
 	}
 
 	public void onBtn_ClickForRewardLoadCallback() {
-		if(!isInitSDK){
-			showTextMessage("");
-		}
-		Polymer.PolyADSDK.setRewardVideoLoadCallback ( 
+		UPSDK.setRewardVideoLoadCallback ( 
 			new System.Action<string, string>(actionForRewardLoadSuccess),
 			new System.Action<string, string>(actionForRewardLoadFail) 
 		);
@@ -104,44 +89,34 @@ public class TestAndroidCall : MonoBehaviour {
 
 	public void onBtnExitAd_Click()
 	{
-		if(!isInitSDK){
-			showTextMessage("");
+
+		if (TEST_AD) {
+			UPSDK.onBackPressed ();
 		}
-		Polymer.PolyADSDK.onBackPressed ();
+
 	}
 
 	public void onBtnExitApp_Click() {
-		//Application.Quit();
-		Polymer.PolyADSDK.setCustomerIdForAndroid("666");
+		Application.Quit();
 	}
 
 	public void onBtnInitABConfig_Click()
 	{
-		Polymer.PolyADSDK.initAbtConfigJson("gameAccountId", true, 1234, "324000", "gender", 33, new string[]{"This is first elements.", "Then is the second one.", "The last one."});
-		showTextMessage("初始化ABTest数据，等待几秒，可以通过获取ABTest功能查看数据 ！");
+		UPSDK.initAbtConfigJson("gameAccountId", true, 1234, "324000", "gender", 33, new string[]{"This is first elements.", "Then is the second one.", "The last one."});
 	}
 
 	public void onBtnShowRewardView_Click() {
-		Polymer.PolyADSDK.showRewardDebugView();
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.showRewardDebugView();
 	}
 
 	public void onBtnShowInterstitialView_Click() {
-		Polymer.PolyADSDK.showInterstitialDebugView();
-		if(!isInitSDK){
-			showTextMessage("");
-		}
+		UPSDK.showInterstitialDebugView();
 	}
 
 	public void onBtnGetABConfig_Click()
 	{
-		string r = Polymer.PolyADSDK.getAbtConfig ("addStep");
+		string r = UPSDK.getAbtConfig ("hello");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
-		showTextMessage("获取ABTest数据==>" + r);
-//		PolyADSDK.loadAvidlyAdsByManual();
-//		Debug.Log ("==> loadAvidlyAdsByManual:");
 	}
 	 
 	public void onBtnReadAssets_Click(){
@@ -172,91 +147,52 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//TextEditor text = GameObject.Find ("CallText").GetComponent<TextEditor>();
 
+
 		if (!inited) {
-			Polymer.PolyADSDK.AvidlySDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
-			Polymer.PolyADSDK.AvidlyInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
-			Polymer.PolyADSDK.AvidlyInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
-			Polymer.PolyADSDK.AvidlyInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
+			UPSDK.UPSDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
+			UPSDK.UPInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
+			UPSDK.UPInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
+			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
 
-			Polymer.PolyADSDK.AvidlyBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
-			Polymer.PolyADSDK.AvidlyBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
-			Polymer.PolyADSDK.AvidlyBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
+			UPSDK.UPBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
+			UPSDK.UPBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
+			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
 
-			Polymer.PolyADSDK.AvidlyRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
-			Polymer.PolyADSDK.AvidlyRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
-			Polymer.PolyADSDK.AvidlyRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
-			Polymer.PolyADSDK.AvidlyRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
-			Polymer.PolyADSDK.AvidlyRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
+			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
+			UPSDK.UPRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
+			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
+			UPSDK.UPRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
+			UPSDK.UPRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
 
 			#if UNITY_ANDROID && !UNITY_EDITOR
 
-			Polymer.PolyADSDK.AvidlyExitAdDidShowCallback = new System.Action<string> (actionForSdkExitAdDidShow);
-			Polymer.PolyADSDK.AvidlyExitAdDidClickCallback = new System.Action<string> (actionForSdkExitAdDidClick);
-			Polymer.PolyADSDK.AvidlyExitAdDidClickMoreCallback = new System.Action<string> (actionForSdkExitAdDidClickMore);
-			Polymer.PolyADSDK.AvidlyExitAdOnExitCallback = new System.Action<string> (actionForSdkExitAdOnExit);
-			Polymer.PolyADSDK.AvidlyExitAdOnCancelCallback = new System.Action<string> (actionForSdkExitAdOnExit);
+			UPSDK.UPExitAdDidShowCallback = new System.Action<string> (actionForSdkExitAdDidShow);
+			UPSDK.UPExitAdDidClickCallback = new System.Action<string> (actionForSdkExitAdDidClick);
+			UPSDK.UPExitAdDidClickMoreCallback = new System.Action<string> (actionForSdkExitAdDidClickMore);
+			UPSDK.UPExitAdOnExitCallback = new System.Action<string> (actionForSdkExitAdOnExit);
+			UPSDK.UPExitAdOnCancelCallback = new System.Action<string> (actionForSdkExitAdOnExit);
 
 			#endif
 		}
-		inited = true;
-		isInitSDK = true;
-		//init方法之前使用
-		// PolyADSDK.setCustomerIdForAndroid (SystemInfo.deviceUniqueIdentifier);
-		UPConstant.UPAccessPrivacyInfoStatusEnum result = Polymer.UPSDK.getAccessPrivacyInfoStatus();
-		if (result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusUnkown
-			|| result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusFailed) {
-			// 如果没有询问过授权，先定位用户是否是欧盟地区
-			// isEuropeanUserCallback异步回调对象
-			UPSDK.isEuropeanUnionUser (new Action<bool, string>(isEuropeanUserCallback));
-		} else {
-			// 假定发行地区是海外
-			UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+
+		if (TEST_AD) {
+			inited = true;
+
+
+			Text text = GameObject.Find ("CallText").GetComponent<Text> ();
+
+			//text.text = PolyADSDK.testCall ();
+			PolyADSDK.setCustomerIdForAndroid("PolyADSDK");
+			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+			UPSDK.runCallbackAfterAppFocus (true);
+			Debug.Log ("initPolyAdSDK ====> " + tt);
+			if (tt != null) {
+				text.text = tt;
+			}
+
 		}
-			
 
-		//PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_AUTO);
-		Debug.Log ("---android id--"+SystemInfo.deviceUniqueIdentifier);
-	
 
-		// Text text = GameObject.Find ("CallText").GetComponent<Text> ();
-
-		//text.text = PolyADSDK.testCall ();
-
-		// string tt = PolyADSDK.initPolyAdSDK (PolyADSDK.SDKZONE_FOREIGN);
-		//Debug.Log ("initPolyAdSDK ====> " + tt);
-		// if (tt != null) {
-		// 	text.text = tt;
-		// }
-	}
-
-	private void isEuropeanUserCallback(bool result, string msg) {
-		// result: true 表示欧盟地区用户，否则非欧盟地区用户
-		if (result) {
-			// 欧盟地区用户，进行授权询问
-			UPSDK.notifyAccessPrivacyInfoStatus (new Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> (accessPrivacyInforCallback));
-		} else {
-			// 非欧盟地区用户，直接初始化SDK
-			// 假定发行地区是海外
-			UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
-		}
-	}
-
-	private void accessPrivacyInforCallback(UPConstant.UPAccessPrivacyInfoStatusEnum result, string msg) {
-		// result 用户授权的结果
-		// 不论结果如何，都要初始化sdk
-		// 假定发行地区是海外
-		UPSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
-		// 打印日志
-		Debug.Log ("===> accessPrivacyInforCallback Event result: " + result + "," + msg);
-	}
-
-	private void showTextMessage(string msg){
-		Text textMsg = GameObject.Find ("ABText").GetComponent<Text> ();
-		if(isInitSDK){
-			textMsg.text = msg;
-		}else{
-			textMsg.text = "请先初始化SDK！！";
-		}
 	}
 
 	#if UNITY_ANDROID && !UNITY_EDITOR
@@ -290,31 +226,26 @@ public class TestAndroidCall : MonoBehaviour {
 	private void actionForIntsLoadFail(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForIntsLoadFail Callback at: " + placeId);
-		showTextMessage("插屏失败回调===>" + placeId + "《==msg==>" + msg);
 	}
 
 	private void actionForIntsLoadSuccess(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForIntsLoadSuccess Callback at: " + placeId);
-		showTextMessage("插屏成功回调===>" + placeId + "《==msg==>"  + msg);
 	}
 
 	private void actionForRewardLoadFail(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadFail Callback at: " + placeId);
-		showTextMessage("激励视频失败回调===>" + placeId + msg);
 	}
 
 	private void actionForRewardLoadSuccess(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadSuccess Callback at: " + placeId);
-		showTextMessage("激励视频成功回调===>" + placeId + msg);
 	}
 
 	private void actionForSdkRewardDidOpen(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidOpen Callback at: " + placeId);
-		showTextMessage("展示激励视频===>" + placeId);
 	}
 
 	private void actionForSdkRewardDidClick(string placeId, string msg)
@@ -350,17 +281,14 @@ public class TestAndroidCall : MonoBehaviour {
 	private void actionForSdkBannerDidShow(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkBannerDidShow Callback at: " + placeId);
-		showTextMessage("展示Banner===>" + placeId);
 	}
 
 	private void actionForSdkInitFinish(bool result, string msg) {
 		Debug.Log ("===> actionForSdkInitFinish Callback r: " + result + ", msg: " + msg);
-		showTextMessage("初始化回调===>" + result + ", msg: " + msg);
 	}
 
 	private void actionForInterstitialDidShow(string placeId, string msg) {
 		Debug.Log ("===> actionForInterstitialDidShow Callback at: " + placeId);
-		showTextMessage("展示插屏===>" + placeId);
 	}
 
 	private void actionForInterstitialDidClick(string placeId, string msg) {
@@ -369,6 +297,13 @@ public class TestAndroidCall : MonoBehaviour {
 
 	private void actionForInterstitialDidClose(string placeId, string msg) {
 		Debug.Log ("===> actionForInterstitialDidClose Callback at: " + placeId);
+	}
+
+
+	//获取所有路径
+	public void getPathWithSetConfigurationFile(){
+
+		XXPod.PodTool.fixPathWithSetConfigurationFile ();
 	}
 
 	 
