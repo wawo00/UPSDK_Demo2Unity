@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Polymer;
 using System;
 using System.IO;
-
+using UPTrace;
 
 using System.Text.RegularExpressions;
 
@@ -119,6 +119,32 @@ public class TestAndroidCall : MonoBehaviour {
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
 	 
+	private const string PRODUCTID = "8888882";
+	private const string CHANNELID = "666668";
+
+	/// <summary>
+	/// test anaylse
+	/// </summary>
+	public void initOuterAnalyse_Click(){
+		UPTraceApi.initTraceSDK (PRODUCTID, CHANNELID, UPTraceConstant.UPTraceSDKZoneEnum.UPTraceSDKZoneDomestic);
+		Debug.Log ("==> initOuterAnalyse_Click:");
+	}
+	int i=0;
+	//test report with anaylse 
+	public void reportWithAnalyse_Click(){
+		Debug.Log ("==> reportWithAnalyse_Click:"+i);
+		i=i+1;
+		Dictionary<string, string> dic = new Dictionary<string, string> ();
+		dic.Add ("appid", "com.test.demo");
+		dic.Add ("name", "player-001");
+		dic.Add ("level", "1");
+		UPTraceApi.traceDictionary ("KEY_PLAYER_DIC", dic);
+		UPTraceApi.traceString ("KEY_PLAYER_STRING", "Hello, this is a testing data.");
+		UPTraceApi.traceKey ("KEY_PLAYER_ONLY");
+		UPTraceApi.countKey ("KEY_PLAYER_ONLY");
+	}
+
+
 	public void onBtnReadAssets_Click(){
 		string filePath = Application.streamingAssetsPath + "/avidly_android/js_ad_sdk_native.js";
 		//		string  filePath = "jar:file://" + Application.dataPath + "!/assets/Avidly_Android/log.txt";

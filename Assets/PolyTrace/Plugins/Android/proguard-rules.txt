@@ -1,0 +1,5 @@
+
+-keep class com.hola.unity.UPTraceProxy {public static <methods>;}
+-keep class com.hola.sdk.* {*;}
+-keep class com.statistics.channel.* {*;}
+
