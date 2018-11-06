@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Polymer;
 using System;
 using System.IO;
-
+using UPTrace;
 
 using System.Text.RegularExpressions;
 
@@ -21,10 +21,10 @@ public class TestAndroidCall : MonoBehaviour {
 		//onButtonClick();
 		//onBtnExitAd_Click();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public void onBtnIntertitialClick() 
@@ -48,7 +48,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//BannerAd
 		#if UNITY_ANDROID && !UNITY_EDITOR
-			UPSDK.showBannerAdAtTop("banner_aaa");
+		UPSDK.showBannerAdAtTop("banner_aaa");
 		#else
 		UPSDK.showBannerAdAtTop("banner_aaa");
 		#endif
@@ -118,7 +118,33 @@ public class TestAndroidCall : MonoBehaviour {
 		string r = UPSDK.getAbtConfig ("hello");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
-	 
+
+	private const string PRODUCTID = "8888881";
+	private const string CHANNELID = "666666";
+
+	/// <summary>
+	/// test anaylse
+	/// </summary>
+	public void initOuterAnalyse_Click(){
+		UPTraceApi.initTraceSDK (PRODUCTID, CHANNELID, UPTraceConstant.UPTraceSDKZoneEnum.UPTraceSDKZoneForeign);
+		Debug.Log ("==> initOuterAnalyse_Click:");
+	}
+	int i=0;
+	//test report with anaylse 
+	public void reportWithAnalyse_Click(){
+		Debug.Log ("==> reportWithAnalyse_Click:"+i);
+		i=i+1;
+		Dictionary<string, string> dic = new Dictionary<string, string> ();
+		dic.Add ("appid", "com.test.demo");
+		dic.Add ("name", "player-001");
+		dic.Add ("level", "1");
+		UPTraceApi.traceDictionary ("KEY_PLAYER_DIC", dic);
+		UPTraceApi.traceString ("KEY_PLAYER_STRING", "Hello, this is a testing data.");
+		UPTraceApi.traceKey ("KEY_PLAYER_ONLY");
+		UPTraceApi.countKey ("KEY_PLAYER_ONLY");
+	}
+
+
 	public void onBtnReadAssets_Click(){
 		string filePath = Application.streamingAssetsPath + "/avidly_android/js_ad_sdk_native.js";
 		//		string  filePath = "jar:file://" + Application.dataPath + "!/assets/Avidly_Android/log.txt";
@@ -126,9 +152,9 @@ public class TestAndroidCall : MonoBehaviour {
 		Debug.Log ("==> onBtnReadAssets_Click:" + filePath);
 		bool exist = File.Exists (filePath);
 		Debug.Log ("==> onBtnReadAssets_Click:" + exist);
-//		if (!exist) {
-//			return;
-//		}
+		//		if (!exist) {
+		//			return;
+		//		}
 		if (Application.platform == RuntimePlatform.Android)
 		{
 			WWW reader = new WWW(filePath);
@@ -142,7 +168,7 @@ public class TestAndroidCall : MonoBehaviour {
 		}
 		Debug.Log ("==> onBtnReadAssets_Click:" + jsonString);
 	}
-	 
+
 	public void onButtonClick()
 	{
 		//TextEditor text = GameObject.Find ("CallText").GetComponent<TextEditor>();
@@ -198,27 +224,27 @@ public class TestAndroidCall : MonoBehaviour {
 	#if UNITY_ANDROID && !UNITY_EDITOR
 	private void actionForSdkExitAdDidShow(string msg)
 	{
-		Debug.Log ("===> actionForSdkExitAdDidShow Callback");
+	Debug.Log ("===> actionForSdkExitAdDidShow Callback");
 	}
 
 	private void actionForSdkExitAdDidClick(string msg)
 	{
-		Debug.Log ("===> actionForSdkExitAdDidClick Callback");
+	Debug.Log ("===> actionForSdkExitAdDidClick Callback");
 	}
 
 	private void actionForSdkExitAdDidClickMore(string msg)
 	{
-		Debug.Log ("===> actionForSdkExitAdDidClickMore Callback");
+	Debug.Log ("===> actionForSdkExitAdDidClickMore Callback");
 	}
 
 	private void actionForSdkExitAdOnExit(string msg)
 	{
-		Debug.Log ("===> actionForSdkExitAdOnExit Callback");
+	Debug.Log ("===> actionForSdkExitAdOnExit Callback");
 	}
 
 	private void actionForSdkExitAdDidOnCancel(string msg)
 	{
-		Debug.Log ("===> actionForSdkExitAdDidOnCancel Callback");
+	Debug.Log ("===> actionForSdkExitAdDidOnCancel Callback");
 	}
 	#endif
 
@@ -306,5 +332,5 @@ public class TestAndroidCall : MonoBehaviour {
 		XXPod.PodTool.fixPathWithSetConfigurationFile ();
 	}
 
-	 
+
 }
