@@ -31,7 +31,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//inter_aaa
 		//inter_ccc
-		UPSDK.showIntersitialAd("sample_inter");
+		UPSDK.showIntersitialAd("sample_inter_inland");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
@@ -46,35 +46,29 @@ public class TestAndroidCall : MonoBehaviour {
 
 	public void onBtnBanner_Top_Click()
 	{
-		//BannerAd
-		#if UNITY_ANDROID && !UNITY_EDITOR
-			UPSDK.showBannerAdAtTop("sample_banner");
-		#else
-		UPSDK.showBannerAdAtTop("sample_banner");
-		#endif
-
-		UPSDK.showBannerAdAtBottom("sample_banner");
+         //sample_banner_inland is placementid		
+		UPSDK.showBannerAdAtTop("sample_banner_inland");
+		
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
-		UPSDK.removeBannerAdAt ("sample_banner");
+    	UPSDK.showBannerAdAtBottom("sample_banner_inland");
 
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+		UPSDK.removeBannerAdAt ("sample_banner_inland");
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+		UPSDK.removeBannerAdAt ("sample_banner_inland");
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		UPSDK.setIntersitialLoadCallback ("sample_inter", 
+		UPSDK.setIntersitialLoadCallback ("sample_inter_inland", 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
@@ -306,5 +300,15 @@ public class TestAndroidCall : MonoBehaviour {
 		XXPod.PodTool.fixPathWithSetConfigurationFile ();
 	}
 
-	 
+
+    //用于获得androidid
+	private String GetAndroidID()
+    {
+        AndroidJavaClass up = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject> ("currentActivity");
+        AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject> ("getContentResolver");  
+        AndroidJavaClass secure = new AndroidJavaClass ("android.provider.Settings$Secure");
+        string android_id = secure.CallStatic<string> ("getString", contentResolver, "android_id");
+        return android_id;
+    }
 }
