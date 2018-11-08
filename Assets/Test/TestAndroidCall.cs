@@ -31,7 +31,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//inter_aaa
 		//inter_ccc
-		UPSDK.showIntersitialAd("inter_aaa");
+		UPSDK.showIntersitialAd("sample_inter");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
@@ -48,33 +48,33 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//BannerAd
 		#if UNITY_ANDROID && !UNITY_EDITOR
-		UPSDK.showBannerAdAtTop("banner_aaa");
+		UPSDK.showBannerAdAtTop("sample_banner");
 		#else
-		UPSDK.showBannerAdAtTop("banner_aaa");
+		UPSDK.showBannerAdAtTop("sample_banner");
 		#endif
 
-		UPSDK.showBannerAdAtBottom("banner_bbb");
+		UPSDK.showBannerAdAtBottom("sample_banner");
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-		UPSDK.removeBannerAdAt ("banner_bbb");
-		UPSDK.removeBannerAdAt ("banner_aaa");
+		UPSDK.removeBannerAdAt ("sample_banner");
+		UPSDK.removeBannerAdAt ("sample_banner");
 
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("banner_aaa");
+		UPSDK.removeBannerAdAt ("sample_banner");
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("banner_bbb");
+		UPSDK.removeBannerAdAt ("sample_banner");
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		UPSDK.setIntersitialLoadCallback ("inter_aaa", 
+		UPSDK.setIntersitialLoadCallback ("sample_inter", 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
