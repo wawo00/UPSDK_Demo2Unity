@@ -21,6 +21,11 @@ namespace Polymer {
 		private readonly static string Function_Banner_DidClick  = "banner_didclick";
 		private readonly static string Function_Banner_DidRemove = "banner_didremove";
 
+		private readonly static string Function_Icon_DidLoad      = "icon_didload";
+		private readonly static string Function_Icon_DidLoadFail  = "icon_didloadfail";
+		private readonly static string Function_Icon_DidShow      = "icon_didshow";
+		private readonly static string Function_Icon_DidClick     = "icon_didclick";
+
 		private readonly static string Function_Reward_DidLoadFail    = "reward_didloadfail";
 		private readonly static string Function_Reward_DidLoadSuccess = "reward_didloadsuccess";
 
@@ -366,6 +371,27 @@ namespace Polymer {
 					}
 					else if (PolyADSDK.AvidlyBannerDidRemoveCallback != null) {
 						PolyADSDK.AvidlyBannerDidRemoveCallback (placeId, msg);
+					}
+				}
+				//icon callback
+				else if (function.Equals (Function_Icon_DidLoad)) {
+					if (UPSDK.UPIconDidLoadCallback != null) {
+						UPSDK.UPIconDidLoadCallback (placeId, msg);
+					}
+				}
+				else if (function.Equals (Function_Icon_DidLoadFail)) {
+					if (UPSDK.UPIconDidLoadFailCallback != null) {
+						UPSDK.UPIconDidLoadFailCallback (placeId, msg);
+					}
+				}
+				else if (function.Equals (Function_Icon_DidShow)) {
+					if (UPSDK.UPIconDidShowCallback != null) {
+						UPSDK.UPIconDidShowCallback (placeId, msg);
+					}
+				}
+				else if (function.Equals (Function_Icon_DidClick)) {
+					if (UPSDK.UPIconDidClickCallback != null) {
+						UPSDK.UPIconDidClickCallback (placeId, msg);
 					}
 				}
 				// exitad callback 

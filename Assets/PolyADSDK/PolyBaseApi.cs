@@ -5,10 +5,10 @@ namespace Polymer
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3005";
+		private readonly static string Version_Of_Ios_In_Plugin = "3006";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3005";
-		private readonly static string Version_Of_Plugin = "3005";
+		private readonly static string Version_Of_Android_In_Plugin = "3006";
+		private readonly static string Version_Of_Plugin = "3006";
 	
 
 		private static bool _sInited; 
@@ -233,6 +233,33 @@ namespace Polymer
 		{
 			if (polyCall != null) {
 				polyCall.removeBanner (cpPlaceId);
+			}
+		}
+
+		/*
+		 * 根据坐标、旋转角度、广告位，展示UPSDK的Icon广告
+		 * @param x: 起始位横坐标
+		 * @param y: 起始位纵坐标
+		 * @param width: 宽度
+		 * @param height: 高度
+		 * @param rotationAngle: 顺时针旋转角度
+		 * @param cpPlaceId: 广告位标识符
+		 */
+		public static void showIconAd(double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
+		{
+			if (polyCall != null) {
+				polyCall.showIconAd (x, y, width, height, rotationAngle, cpPlaceId);
+			}
+		}
+
+		/*
+		 * 根据广告位，删除aUPSDK的Icon广告
+		 * @param cpPlaceId: 广告位标识符
+		 */
+		public static void removeIconAdAt(string cpPlaceId)
+		{
+			if (polyCall != null) {
+				polyCall.removeIconAd(cpPlaceId);
 			}
 		}
 

@@ -21,6 +21,11 @@ namespace Polymer
 		public static Action<string, string> UPBannerDidShowCallback = null;
 		public static Action<string, string> UPBannerDidClickCallback = null;
 		public static Action<string, string> UPBannerDidRemoveCallback = null;
+		//icon ad
+		public static Action<string, string> UPIconDidLoadCallback = null;
+		public static Action<string, string> UPIconDidLoadFailCallback = null;
+		public static Action<string, string> UPIconDidShowCallback = null;
+		public static Action<string, string> UPIconDidClickCallback = null;
 
 		#if UNITY_ANDROID && !UNITY_EDITOR
 		public static Action<string> UPExitAdDidShowCallback = null;

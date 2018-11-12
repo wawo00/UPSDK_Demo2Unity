@@ -31,7 +31,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//inter_aaa
 		//inter_ccc
-		UPSDK.showIntersitialAd("sample_inter_inland");
+		UPSDK.showIntersitialAd("inter_aaa");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
@@ -47,28 +47,28 @@ public class TestAndroidCall : MonoBehaviour {
 	public void onBtnBanner_Top_Click()
 	{
          //sample_banner_inland is placementid		
-		UPSDK.showBannerAdAtTop("sample_banner_inland");
+		UPSDK.showBannerAdAtTop("banner_aaa");
 		
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-    	UPSDK.showBannerAdAtBottom("sample_banner_inland");
+    	UPSDK.showBannerAdAtBottom("banner_aaa");
 
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner_inland");
+		UPSDK.removeBannerAdAt ("banner_aaa");
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner_inland");
+		UPSDK.removeBannerAdAt ("banner_aaa");
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		UPSDK.setIntersitialLoadCallback ("sample_inter_inland", 
+		UPSDK.setIntersitialLoadCallback ("inter_aaa", 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
