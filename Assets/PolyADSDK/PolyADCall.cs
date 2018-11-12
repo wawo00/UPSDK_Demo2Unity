@@ -21,6 +21,10 @@ namespace Polymer
 			[DllImport("__Internal")]
 			private static extern void showBannerTop(string placementid);
 			[DllImport("__Internal")]
+			private static extern void showIcon(double x, double y, double width, double height, double rotationAngle, string placementid);
+			[DllImport("__Internal")]
+			private static extern void removeIcon(string placementid);
+			[DllImport("__Internal")]
 			private static extern void showBannerBottom(string placementid);
 			[DllImport("__Internal")]
 			private static extern void removeBannerAd(string placementid);
@@ -718,6 +722,41 @@ namespace Polymer
 			}
 			#endif
 			 
+		}
+
+		/*
+		 * 根据坐标、旋转角度、广告位，展示UPSDK的Icon广告
+		 * @param x: 起始位横坐标
+		 * @param y: 起始位纵坐标
+		 * @param width: 宽度
+		 * @param height: 高度
+		 * @param rotationAngle: 顺时针旋转角度
+		 * @param cpPlaceId: Icon广告位标识符
+		 */
+		public void showIconAd(double x, double y, double width, double height, double rotationAngle, string cpPlaceId) {
+			if (cpPlaceId == null) {
+				Debug.Log ("===> call showIconAd(), the param cpPlaceId can't be null. ");
+				return ;
+			}
+			#if UNITY_IOS && !UNITY_EDITOR
+			showIcon(x,y,width,height,rotationAngle,cpPlaceId);
+			#elif UNITY_ANDROID && !UNITY_EDITOR
+			#endif
+		}
+
+		/*
+		 * 根据广告位，删除aUPSDK的Icon广告
+		 * @param cpPlaceId: Icon广告位标识符
+		 */
+		public void removeIconAd(string cpPlaceId) {
+			if (cpPlaceId == null) {
+				Debug.Log ("===> call removeIcon(), the param cpPlaceId can't be null. ");
+				return ;
+			}
+			#if UNITY_IOS && !UNITY_EDITOR
+			removeIcon(cpPlaceId);
+			#elif UNITY_ANDROID && !UNITY_EDITOR
+			#endif
 		}
 
 		public void showBannerAdAtBottom(string cpPlaceId) {
