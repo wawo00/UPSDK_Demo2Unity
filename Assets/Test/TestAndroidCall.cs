@@ -13,7 +13,8 @@ using System.Text.RegularExpressions;
 public class TestAndroidCall : MonoBehaviour {
 
 	private bool inited;
-
+    private string interPlacementId="inter_aaa";
+    private string bannerPlacementId="banner_aaa";
 	private bool TEST_AD = true;
 
 	// Use this for initialization
@@ -31,7 +32,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		//sample_inter
 		//sample_inter
-		UPSDK.showIntersitialAd("sample_inter");
+		UPSDK.showIntersitialAd(interPlacementId);
 	}
 
 	public void onBtnIntertitial_CCC_Click()
@@ -47,34 +48,31 @@ public class TestAndroidCall : MonoBehaviour {
 	public void onBtnBanner_Top_Click()
 	{
 		//BannerAd
-		#if UNITY_ANDROID && !UNITY_EDITOR
-			UPSDK.showBannerAdAtTop("sample_banner");
-		#else
-		UPSDK.showBannerAdAtTop("sample_banner");
-		#endif
-
-		UPSDK.showBannerAdAtBottom("sample_banner");
+	
+		UPSDK.showBannerAdAtTop(bannerPlacementId);
+		
+		
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
-		UPSDK.removeBannerAdAt ("sample_banner");
+		
+		UPSDK.showBannerAdAtBottom(bannerPlacementId);
 
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+		UPSDK.removeBannerAdAt (bannerPlacementId);
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+		UPSDK.removeBannerAdAt (bannerPlacementId);
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		UPSDK.setIntersitialLoadCallback ("sample_inter", 
+		UPSDK.setIntersitialLoadCallback (interPlacementId, 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
