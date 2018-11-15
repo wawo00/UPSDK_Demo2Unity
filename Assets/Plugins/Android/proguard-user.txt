@@ -1,3 +1,9 @@
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+-libraryjars
+-ignorewarnings  
+
 
 # avidly
 -keep class com.avidly.ads.** {*;}
@@ -19,6 +25,9 @@
 -dontwarn com.up.**
 -keep class com.statistics.channel.* {*;}
 # avidly end
+
+
+
 
 # support
 -keep public class * extends android.support.v4.app.Fragment
@@ -61,11 +70,7 @@
 -keep class * extends java.util.ListResourceBundle {
     protected java.lang.Object[][] getContents();
 }
--keep class com.google.android.gms.ads.AdRequest
--keep class com.google.android.gms.ads.reward.RewardedVideoAd
--keep class com.google.android.gms.ads.InterstitialAd
--keep class com.google.android.gms.ads.AdView
--keep class com.google.android.gms.ads.identifier.AdvertisingIdClient
+-keep class com.google.android.gms.ads.** {*;}
 -keep class com.google.android.gms.common.** {*;}
 -dontwarn com.google.android.gms.**
 -dontwarn com.google.protobuf.**
@@ -123,6 +128,8 @@
 -keepattributes JavascriptInterface
 -keep class android.webkit.JavascriptInterface {*;}
 -keep class com.unity3d.ads.** {*;}
+-keep class com.unity3d.services.** {*;}
+-dontwarn com.google.ar.core.**
 # unity end
 
 # appnext
