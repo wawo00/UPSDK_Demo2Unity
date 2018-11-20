@@ -48,7 +48,7 @@ android {
 		}
 		release {
 			// Set minifyEnabled to true if you want to run ProGuard on your project
-			minifyEnabled true
+			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'
 			**SIGNCONFIG**
 		}
