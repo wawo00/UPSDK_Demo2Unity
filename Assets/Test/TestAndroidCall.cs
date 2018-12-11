@@ -176,7 +176,10 @@ public class TestAndroidCall : MonoBehaviour {
 			Text text = GameObject.Find ("CallText").GetComponent<Text> ();
 
 			//text.text = PolyADSDK.testCall ();
-			PolyADSDK.setCustomerIdForAndroid("PolyADSDK");
+			
+			//**注意**
+			//请在init方法之前调用此方法，并传入androidid，详细信息请 参考http://docs.upltv.com/zh/master/Unity/unity05_1_sample_init.html 中的setcustomID
+			//PolyADSDK.setCustomerIdForAndroid("获得的AndroidId");
 			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
 			UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
