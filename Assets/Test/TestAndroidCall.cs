@@ -175,7 +175,8 @@ public class TestAndroidCall : MonoBehaviour {
 			Text text = GameObject.Find ("CallText").GetComponent<Text> ();
 
 			//text.text = PolyADSDK.testCall ();
-			PolyADSDK.setCustomerIdForAndroid("PolyADSDK");
+			//If you don't publish in google play, you should call this method and set AndroidID before init.
+			//PolyADSDK.setCustomerIdForAndroid(" YOUR AndroidId");
 			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
 			UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
