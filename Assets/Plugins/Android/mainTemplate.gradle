@@ -5,7 +5,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.3.3'
+		classpath 'com.android.tools.build:gradle:2.1.0'
 	}
 }
 
@@ -41,6 +41,11 @@ android {
 	lintOptions {
 		abortOnError false
 	}
+
+aaptOptions {
+		noCompress '.unity3d', '.ress', '.resource', '.obb'
+	}
+
 **SIGN**
 	buildTypes {
 		debug {
