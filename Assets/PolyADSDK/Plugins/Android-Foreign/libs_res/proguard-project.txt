@@ -170,11 +170,6 @@
 -dontwarn com.mopub.**
 # vk end
 
-# batmobi
--keep class com.batmobi.** { *;}
--dontwarn com.batmobi.**
-# batmobi end
-
 # inmobi
 -keepattributes SourceFile,LineNumberTable
 -keep class com.inmobi.** { *; }
@@ -336,6 +331,7 @@ public static final ** CREATOR;
 # mobpower end
 
 # display.io
--keep class io.display.sdk.Controller.** { *;}
--dontwarn io.display.sdk.Controller.**
+-keep class io.display.sdk.** { *;}
+-dontwarn io.display.sdk.**
 # display.io end
+
