@@ -180,7 +180,7 @@ public class TestAndroidCall : MonoBehaviour {
 			//**注意**
 			//请在init方法之前调用此方法，并传入androidid，详细信息请 参考http://docs.upltv.com/zh/master/Unity/unity05_1_sample_init.html 中的setcustomID
 			PolyADSDK.setCustomerIdForAndroid(GetAndroidID());
-			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_CHINA);
 			UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
 			if (tt != null) {
