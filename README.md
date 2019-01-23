@@ -4,4 +4,4 @@ This is the demo of unity with UPSDK in Android devices ,if you have any problem
 
 # 注意
 1.打包APK时请使用gradle模式来进行打包
-
+2.打包时候密码是 123456
