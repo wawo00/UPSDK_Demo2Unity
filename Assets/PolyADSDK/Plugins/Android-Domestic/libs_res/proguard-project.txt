@@ -100,20 +100,17 @@
 -keeppackagenames 'retrofit2'
 # vungle end
 
-# mobvista
+# mintegral
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class com.mintegral.** {*;}
 -keep interface com.mintegral.** {*;}
--keep class com.mobvista.** {*; }
--keep interface com.mobvista.** {*; }
 -keep class android.support.v4.** { *; }
--dontwarn com.mobvista.**
 -dontwarn com.mintegral.**
 -keep class **.R$* { public static final int mintegral*; }
 -keep class com.alphab.** {*; }
 -keep interface com.alphab.** {*; }
-# mobvista end
+# mintegral end
 
 # unity
 -keepattributes SourceFile,LineNumberTable
@@ -123,11 +120,6 @@
 -keep class com.unity3d.services.** {*;}
 -dontwarn com.google.ar.core.**
 # unity end
-
-# appnext
--keep class com.appnext.** { *; }
--dontwarn com.appnext.**
-# appnext end
 
 # applovin
 -keep class com.applovin.** { *; }
@@ -193,21 +185,6 @@
 -keep class android.support.v7.** {public *;}
 # gdt end
 
-# youappi
--keep class com.google.gson.**{ *;}
--keep class com.google.android.gms.**{*;}
--keep class com.youappi.sdk.**{*;}
--keep class com.moat.** { *; }
--keep class com.ai.t.** { *; }
--keep interface com.youappi.sdk.**{*;}
--keep enum com.youappi.sdk.**{*;}
--keepclassmembers class * {
-   @android.webkit.JavascriptInterface <methods>;
-}
--dontwarn com.youappi.sdk.**
--dontwarn com.ai.t.network.**
-# youappi end
-
 # toutiao
 -keep class com.bytedance.sdk.openadsdk.** { *; }
 -keep class com.androidquery.callback.** {*;}
@@ -219,9 +196,4 @@
 # amazon
 -keep class com.amazon.device.ads.** { *; }
 # amazon end
-
-# display.io
--keep class io.display.sdk.** { *;}
--dontwarn io.display.sdk.**
-# display.io end
 
