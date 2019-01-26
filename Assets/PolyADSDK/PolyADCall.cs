@@ -113,6 +113,8 @@ namespace Polymer
 			private readonly static string JavaClassStaticMethod_ShowTopBanner = "showTopBanner";
 			private readonly static string JavaClassStaticMethod_ShowBottomBanner = "showBottomBanner";
 			private readonly static string JavaClassStaticMethod_RemoveBanner = "removeBanner";
+			private readonly static string JavaClassStaticMethod_ShowIconAd = "showIconAd";
+			private readonly static string JavaClassStaticMethod_RemoveIconAd = "removeIconAd";
 			private readonly static string JavaClassStaticMethod_SetManifestPackageName = "setManifestPackageName";
 			private readonly static string JavaClassStaticMethod_ShowInterstitial = "showInterstitial";
 			private readonly static string JavaClassStaticMethod_ShowRewardVideo = "showRewardVideo";
@@ -741,6 +743,10 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			showIcon(x,y,width,height,rotationAngle,cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+			jc.CallStatic (JavaClassStaticMethod_ShowIconAd, x, y, width, height, rotationAngle, cpPlaceId);
+			}
 			#endif
 		}
 
@@ -756,6 +762,10 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			removeIcon(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+			jc.CallStatic (JavaClassStaticMethod_RemoveIconAd, cpPlaceId);
+			}
 			#endif
 		}
 

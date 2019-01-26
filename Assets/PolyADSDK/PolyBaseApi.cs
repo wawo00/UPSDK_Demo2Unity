@@ -242,7 +242,7 @@ namespace Polymer
 		 * @param y: 起始位纵坐标
 		 * @param width: 宽度
 		 * @param height: 高度
-		 * @param rotationAngle: 顺时针旋转角度
+		 * @param rotationAngle: 顺时针旋转角度(Android平台无效)
 		 * @param cpPlaceId: 广告位标识符
 		 */
 		public static void showIconAd(double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
