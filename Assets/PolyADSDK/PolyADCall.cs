@@ -349,6 +349,9 @@ namespace Polymer
 
 
 			#if UNITY_IOS && !UNITY_EDITOR
+            Debug.Log ("===> init ios call:" + PolyADSDKGameObject.GameObject_Callback_Name);
+            Debug.Log ("===> init ios fun:" + PolyADSDKGameObject.Java_Callback_Function);
+            Debug.Log ("===> init ios azone:" + azone);
 				string result = initIosSDKByZone(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function, azone);
 				if (UPSDK.UPSDKInitFinishedCallback != null) {
 					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
