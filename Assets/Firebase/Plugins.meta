@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Firebase/Plugins.meta
 guid: d6f54c8a4b61e8644962ec2036821b2b
 folderAsset: yes
 timeCreated: 1542184250
+=======
+guid: 0c4e50d20cb00f24e960b5ce238ea222
+folderAsset: yes
+timeCreated: 1537870243
+>>>>>>> parent of 6013f9a... 升级到30068:Assets/PolyTrace/Plugins.meta
 licenseType: Free
 DefaultImporter:
   externalObjects: {}
