@@ -59,6 +59,7 @@
      <Compile Include="Assets\PolyADSDK\PolyPostBuild.cs" />
      <Compile Include="Assets\PolyADSDK\UPConstant.cs" />
      <Compile Include="Assets\PolyADSDK\UPSDK.cs" />
+     <Compile Include="Assets\PolyTrace\UPTraceConstant.cs" />
      <Compile Include="Assets\Test\MiniJSON.cs" />
      <Compile Include="Assets\Test\PodTool.cs" />
      <Compile Include="Assets\Test\TestAndroidCall.cs" />
