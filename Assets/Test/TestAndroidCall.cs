@@ -10,77 +10,93 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 
-public class TestAndroidCall : MonoBehaviour {
+public class TestAndroidCall : MonoBehaviour
+{
 
 	private bool inited;
 
 	private bool TEST_AD = true;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		//onButtonClick();
 		//onBtnExitAd_Click();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		
 	}
 
-	public void onBtnIntertitialClick() 
+	public void onBtnIntertitialClick ()
 	{
 		//inter_aaa
 		//inter_ccc
-		UPSDK.showIntersitialAd("sample_inter");
+		UPSDK.showIntersitialAd ("sample_inter");
 	}
 
-	public void onBtnIntertitial_CCC_Click()
+	public void onBtnIntertitial_CCC_Click ()
 	{
-		UPSDK.showIntersitialAd("rewarded_video");
+		UPSDK.showIntersitialAd ("rewarded_video");
 	}
 
-	public void onBtnReward_aaa_Click()
+	public void onBtnReward_aaa_Click ()
 	{
-		UPSDK.showRewardAd("aaa");
+		UPSDK.showRewardAd ("aaa");
 	}
 
-	public void onBtnBanner_Top_Click()
+	public void onBtnBanner_Top_Click ()
 	{
 		//BannerAd
-	 	UPSDK.showBannerAdAtTop("sample_banner");
+		UPSDK.showBannerAdAtTop ("sample_banner");
 	}
 
-	public void onBtnBanner_Bottom_Click()
+	public void onBtnBanner_Bottom_Click ()
 	{
 		
-        UPSDK.showBannerAdAtBottom("sample_banner");
+		UPSDK.showBannerAdAtBottom ("sample_banner");
 	}
 
-	public void onBtnBanner_Top_Del_Click()
+	public void onBtnBanner_Top_Del_Click ()
 	{
 		UPSDK.removeBannerAdAt ("sample_banner");
 	}
 
-	public void onBtnBanner_Bottom_Del_Click()
+	public void onBtnBanner_Bottom_Del_Click ()
 	{
 		UPSDK.removeBannerAdAt ("sample_banner");
 	}
 
-	public void onBtn_ClickForIntsLoadCallback() {
+	public void onBtnIcon_Click ()
+	{
+		//IconAd
+		UPSDK.showIconAd (0, 0, 120, 100, 0, "test");
+	}
+
+	public void onBtnIcon_Del_Click ()
+	{
+		UPSDK.removeIconAdAt ("test");
+	}
+
+	public void onBtn_ClickForIntsLoadCallback ()
+	{
 		UPSDK.setIntersitialLoadCallback ("sample_inter", 
-			new System.Action<string, string>(actionForIntsLoadSuccess),
-			new System.Action<string, string>(actionForIntsLoadFail) 
+			new System.Action<string, string> (actionForIntsLoadSuccess),
+			new System.Action<string, string> (actionForIntsLoadFail) 
 		);
 	}
 
-	public void onBtn_ClickForRewardLoadCallback() {
-		UPSDK.setRewardVideoLoadCallback ( 
-			new System.Action<string, string>(actionForRewardLoadSuccess),
-			new System.Action<string, string>(actionForRewardLoadFail) 
+	public void onBtn_ClickForRewardLoadCallback ()
+	{
+		UPSDK.setRewardVideoLoadCallback (
+			new System.Action<string, string> (actionForRewardLoadSuccess),
+			new System.Action<string, string> (actionForRewardLoadFail) 
 		);
 	}
 
-	public void onBtnExitAd_Click()
+	public void onBtnExitAd_Click ()
 	{
 
 		if (TEST_AD) {
@@ -89,30 +105,38 @@ public class TestAndroidCall : MonoBehaviour {
 
 	}
 
-	public void onBtnExitApp_Click() {
-		Application.Quit();
-	}
-
-	public void onBtnInitABConfig_Click()
+	public void onBtnExitApp_Click ()
 	{
-		UPSDK.initAbtConfigJson("gameAccountId", true, 1234, "324000", "gender", 33, new string[]{"This is first elements.", "Then is the second one.", "The last one."});
+		Application.Quit ();
 	}
 
-	public void onBtnShowRewardView_Click() {
-		UPSDK.showRewardDebugView();
+	public void onBtnInitABConfig_Click ()
+	{
+		UPSDK.initAbtConfigJson ("gameAccountId", true, 1234, "324000", "gender", 33, new string[] {
+			"This is first elements.",
+			"Then is the second one.",
+			"The last one."
+		});
 	}
 
-	public void onBtnShowInterstitialView_Click() {
-		UPSDK.showInterstitialDebugView();
+	public void onBtnShowRewardView_Click ()
+	{
+		UPSDK.showRewardDebugView ();
 	}
 
-	public void onBtnGetABConfig_Click()
+	public void onBtnShowInterstitialView_Click ()
+	{
+		UPSDK.showInterstitialDebugView ();
+	}
+
+	public void onBtnGetABConfig_Click ()
 	{
 		string r = UPSDK.getAbtConfig ("hello");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
-	 
-	public void onBtnReadAssets_Click(){
+
+	public void onBtnReadAssets_Click ()
+	{
 		string filePath = Application.streamingAssetsPath + "/avidly_android/js_ad_sdk_native.js";
 		//		string  filePath = "jar:file://" + Application.dataPath + "!/assets/Avidly_Android/log.txt";
 		string jsonString;
@@ -122,40 +146,38 @@ public class TestAndroidCall : MonoBehaviour {
 //		if (!exist) {
 //			return;
 //		}
-		if (Application.platform == RuntimePlatform.Android)
-		{
-			WWW reader = new WWW(filePath);
-			while (!reader.isDone) { }
+		if (Application.platform == RuntimePlatform.Android) {
+			WWW reader = new WWW (filePath);
+			while (!reader.isDone) {
+			}
 
 			jsonString = reader.text;
-		}
-		else
-		{
-			jsonString = File.ReadAllText(filePath);
+		} else {
+			jsonString = File.ReadAllText (filePath);
 		}
 		Debug.Log ("==> onBtnReadAssets_Click:" + jsonString);
 	}
-	 
-	public void onButtonClick()
+
+	public void onButtonClick ()
 	{
 		//TextEditor text = GameObject.Find ("CallText").GetComponent<TextEditor>();
 
 
 		if (!inited) {
-			UPSDK.UPSDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
-			UPSDK.UPInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
-			UPSDK.UPInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
-			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
+			UPSDK.UPSDKInitFinishedCallback = new System.Action<bool, string> (actionForSdkInitFinish);
+			UPSDK.UPInterstitialDidClickCallback = new System.Action<string, string> (actionForInterstitialDidClick);
+			UPSDK.UPInterstitialDidCloseCallback = new System.Action<string, string> (actionForInterstitialDidClose);
+			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string> (actionForInterstitialDidShow);
 
-			UPSDK.UPBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
-			UPSDK.UPBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
-			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
+			UPSDK.UPBannerDidShowCallback = new System.Action<string, string> (actionForSdkBannerDidShow);
+			UPSDK.UPBannerDidClickCallback = new System.Action<string, string> (actionForSdkBannerDidClick);
+			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string> (actionForSdkBannerRemove);
 
-			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
-			UPSDK.UPRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
-			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
-			UPSDK.UPRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
-			UPSDK.UPRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
+			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string> (actionForSdkRewardDidOpen);
+			UPSDK.UPRewardDidClickCallback = new System.Action<string, string> (actionForSdkRewardDidClick);
+			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string> (actionForSdkRewardDidClose);
+			UPSDK.UPRewardDidGivenCallback = new System.Action<string, string> (actionForSdkRewardDidGiven);
+			UPSDK.UPRewardDidAbandonCallback = new System.Action<string, string> (actionForSdkRewardDidAbandon);
 
 			#if UNITY_ANDROID && !UNITY_EDITOR
 
@@ -175,10 +197,9 @@ public class TestAndroidCall : MonoBehaviour {
 			Text text = GameObject.Find ("CallText").GetComponent<Text> ();
 
 			//text.text = PolyADSDK.testCall ();
-			//If you don't publish in google play, you should call this method and set AndroidID before init.
-			//PolyADSDK.setCustomerIdForAndroid(" YOUR AndroidId");
+			PolyADSDK.setCustomerIdForAndroid ("PolyADSDK");
 			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
-			UPSDK.runCallbackAfterAppFocus (true);
+			// UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
 			if (tt != null) {
 				text.text = tt;
@@ -217,85 +238,90 @@ public class TestAndroidCall : MonoBehaviour {
 	#endif
 
 	// test for reward video callback
-	private void actionForIntsLoadFail(string placeId, string msg)
+	private void actionForIntsLoadFail (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForIntsLoadFail Callback at: " + placeId);
 	}
 
-	private void actionForIntsLoadSuccess(string placeId, string msg)
+	private void actionForIntsLoadSuccess (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForIntsLoadSuccess Callback at: " + placeId);
 	}
 
-	private void actionForRewardLoadFail(string placeId, string msg)
+	private void actionForRewardLoadFail (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadFail Callback at: " + placeId);
 	}
 
-	private void actionForRewardLoadSuccess(string placeId, string msg)
+	private void actionForRewardLoadSuccess (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadSuccess Callback at: " + placeId);
 	}
 
-	private void actionForSdkRewardDidOpen(string placeId, string msg)
+	private void actionForSdkRewardDidOpen (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidOpen Callback at: " + placeId);
 	}
 
-	private void actionForSdkRewardDidClick(string placeId, string msg)
+	private void actionForSdkRewardDidClick (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidClick Callback at: " + placeId);
 	}
 
-	private void actionForSdkRewardDidClose(string placeId, string msg)
+	private void actionForSdkRewardDidClose (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidClose Callback at: " + placeId);
 	}
 
-	private void actionForSdkRewardDidGiven(string placeId, string msg)
+	private void actionForSdkRewardDidGiven (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidGiven Callback at: " + placeId);
 	}
 
-	private void actionForSdkRewardDidAbandon(string placeId, string msg)
+	private void actionForSdkRewardDidAbandon (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkRewardDidAbandon Callback at: " + placeId);
 	}
 
-	private void actionForSdkBannerRemove(string placeId, string msg)
+	private void actionForSdkBannerRemove (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkBannerRemove Callback at: " + placeId);
 	}
 
-	private void actionForSdkBannerDidClick(string placeId, string msg)
+	private void actionForSdkBannerDidClick (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkBannerDidClick Callback at: " + placeId);
 	}
 
-	private void actionForSdkBannerDidShow(string placeId, string msg)
+	private void actionForSdkBannerDidShow (string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkBannerDidShow Callback at: " + placeId);
 	}
 
-	private void actionForSdkInitFinish(bool result, string msg) {
+	private void actionForSdkInitFinish (bool result, string msg)
+	{
 		Debug.Log ("===> actionForSdkInitFinish Callback r: " + result + ", msg: " + msg);
 	}
 
-	private void actionForInterstitialDidShow(string placeId, string msg) {
+	private void actionForInterstitialDidShow (string placeId, string msg)
+	{
 		Debug.Log ("===> actionForInterstitialDidShow Callback at: " + placeId);
 	}
 
-	private void actionForInterstitialDidClick(string placeId, string msg) {
+	private void actionForInterstitialDidClick (string placeId, string msg)
+	{
 		Debug.Log ("===> actionForInterstitialDidClick Callback at: " + placeId);
 	}
 
-	private void actionForInterstitialDidClose(string placeId, string msg) {
+	private void actionForInterstitialDidClose (string placeId, string msg)
+	{
 		Debug.Log ("===> actionForInterstitialDidClose Callback at: " + placeId);
 	}
 
 
 	//获取所有路径
-	public void getPathWithSetConfigurationFile(){
+	public void getPathWithSetConfigurationFile ()
+	{
 
 		XXPod.PodTool.fixPathWithSetConfigurationFile ();
 	}
