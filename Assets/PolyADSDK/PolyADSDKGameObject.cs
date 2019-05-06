@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PolyXXJSON;
@@ -7,12 +7,14 @@ namespace Polymer {
 
 	public class PolyADSDKGameObject : MonoBehaviour {
 
+		private readonly static string Function_Reward_WillOpen    = "reward_willopen";
 		private readonly static string Function_Reward_DidOpen    = "reward_didopen";
 		private readonly static string Function_Reward_DidClick   = "reward_didclick";
 		private readonly static string Function_Reward_DidClose   = "reward_didclose";
 		private readonly static string Function_Reward_DidGivien  = "reward_didgiven";
 		private readonly static string Function_Reward_DidAbandon = "reward_didabandon";
 
+		private readonly static string Function_Interstitial_Willshow  = "interstitial_willshow";
 		private readonly static string Function_Interstitial_Didshow  = "interstitial_didshow";
 		private readonly static string Function_Interstitial_Didclose = "interstitial_didclose";
 		private readonly static string Function_Interstitial_Didclick = "interstitial_didclick";
@@ -172,7 +174,7 @@ namespace Polymer {
 
 		public void onJavaCallback(string message) {
 			// Debug.Log ("===> onJavaCallback enableCallbackAfterAppFocus: " + enableCallbackAfterAppFocus +",canObserverAppFocusCall: " + canObserverAppFocusCall);
-			if (enableCallbackAfterAppFocus) {
+			if (false && enableCallbackAfterAppFocus) {
 				if (canObserverAppFocusCall) {
 					if (isAppFocus) {
 						if (cachedMessages.Count > 0) {
@@ -190,10 +192,12 @@ namespace Polymer {
 					if (jsonObj.ContainsKey ("function")) {
 						string function = (string)jsonObj ["function"];
 						if (function.Equals (Function_Reward_DidOpen)
+							|| function.Equals	(Function_Reward_WillOpen)
 						    || function.Equals (Function_Reward_DidClick)
 						    || function.Equals (Function_Reward_DidGivien)
 							|| function.Equals (Function_Reward_DidAbandon)
 							|| function.Equals (Function_Interstitial_Didshow)
+							|| function.Equals (Function_Interstitial_Willshow)
 							|| function.Equals (Function_Interstitial_Didclick)) {
 							cachedMessages.Add (message);
 						} else {
@@ -230,7 +234,10 @@ namespace Polymer {
 					msg = (string)jsonObj["message"];
 					placeId = (string)jsonObj["cpadsid"];
 				}
-				Debug.Log ("===> function: " + function +",cpadsid: " + placeId);
+                
+                string strFu = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                Debug.Log ("===> function: " + function +",cpadsid: " + placeId + ", time at:" + strFu);
+                
 				bool isReportOnlineDebug = false;
 				if (adCall != null) {
 					isReportOnlineDebug = adCall.IsReportOnlineEnable ();
@@ -239,7 +246,24 @@ namespace Polymer {
 					}
 				}
 				//reward callback
-				if (function.Equals (Function_Reward_DidOpen)) {
+				if (function.Equals (Function_Reward_WillOpen)) {
+					string fmsg = "";
+					if (UPSDK.UPRewardWillOpenCallback != null) {
+						Debug.Log ("===> function UPRewardWillOpenCallback(): ");
+						UPSDK.UPRewardWillOpenCallback (placeId, msg);
+						fmsg = "UnityPlugin Run UPSDK.UPRewardWillOpenCallback()";
+					} else if (PolyADSDK.AvidlyRewardWillOpenCallback != null) {
+						Debug.Log ("===> function AvidlyRewardWillOpenCallback(): ");
+						PolyADSDK.AvidlyRewardWillOpenCallback (placeId, msg);
+						fmsg = "UnityPlugin Run PolyADSDK.AvidlyRewardWillOpenCallback()";
+					} else {
+						Debug.Log ("===> function call fail, no delegate object. ");
+						fmsg = "can't run RewardWillOpenCallback(), no delegate object.";
+					}
+					if (isReportOnlineDebug) {
+						adCall.reportAdVideoShowDid(fmsg);
+					}
+				} else if (function.Equals (Function_Reward_DidOpen)) {
 					string fmsg = "";
 					if (UPSDK.UPRewardDidOpenCallback != null) {
 						Debug.Log ("===> function UPRewardDidOpenCallback(): ");
@@ -310,6 +334,20 @@ namespace Polymer {
 					}
 				}
 				//Interstitial callback
+				else if (function.Equals (Function_Interstitial_Willshow)) {
+					string fmsg = "can't run InterstitialWillShowCallback(), no delegate object.";
+					if (UPSDK.UPInterstitialWillShowCallback != null) {
+						UPSDK.UPInterstitialWillShowCallback (placeId, msg);
+						fmsg = "UnityPlugin Run UPSDK.UPInterstitialWillShowCallback()";
+					}
+					else if (PolyADSDK.AvidlyInterstitialWillShowCallback != null) {
+						PolyADSDK.AvidlyInterstitialWillShowCallback (placeId, msg);
+						fmsg = "UnityPlugin Run PolyADSDK.AvidlyInterstitialWillShowCallback()";
+					}
+					if (isReportOnlineDebug) {
+						adCall.reportILDidShow(placeId, fmsg);
+					}
+				}
 				else if (function.Equals (Function_Interstitial_Didshow)) {
 					string fmsg = "can't run InterstitialDidShowCallback(), no delegate object.";
 					if (UPSDK.UPInterstitialDidShowCallback != null) {

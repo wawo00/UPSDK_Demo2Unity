@@ -12,12 +12,14 @@ namespace Polymer
 		public static Action<bool, string> AvidlySDKInitFinishedCallback = null;
 	 
 		//reward ad
+		public static Action<string, string> AvidlyRewardWillOpenCallback = null;
 		public static Action<string, string> AvidlyRewardDidOpenCallback = null;
 		public static Action<string, string> AvidlyRewardDidClickCallback = null;
 		public static Action<string, string> AvidlyRewardDidCloseCallback = null; 
 		public static Action<string, string> AvidlyRewardDidGivenCallback = null;
 		public static Action<string, string> AvidlyRewardDidAbandonCallback = null;
 		//Interstitial ad
+		public static Action<string, string> AvidlyInterstitialWillShowCallback = null;
 		public static Action<string, string> AvidlyInterstitialDidShowCallback = null;
 		public static Action<string, string> AvidlyInterstitialDidCloseCallback = null;
 		public static Action<string, string> AvidlyInterstitialDidClickCallback = null;

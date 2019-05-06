@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 
 namespace Polymer
 {
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3006.5";
+		private readonly static string Version_Of_Ios_In_Plugin = "3007.1";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3006.4";
-		private readonly static string Version_Of_Plugin = "3006.4";
+		private readonly static string Version_Of_Android_In_Plugin = "3007.1";
+		private readonly static string Version_Of_Plugin = "3007.1";
 	
 
 		private static bool _sInited; 
@@ -406,8 +406,8 @@ namespace Polymer
 
 		/**
      	* 设置所有的回调均在游戏活跃时发生
-     	* 对于unity 17.4的版本，在测试中发现苹果手机无法正确调用did_open的回调而且也无法监听OnApplicationPause(bool pauseStatus)
-     	* 有监于此，增加此方法解决回调问题
+     	* 对于unity 17.4的版本，在测试中发现苹果手机无法正确调用did_open的回调而且也无法监听OnApplicationPause(bool pauseStatus)，增加此方法解决回调问题
+     	* 3007开始废弃此方法，在sdk内部用更优的方案替换
      	* Version 3004 and above support this method
      	*/
 		public static void runCallbackAfterAppFocus(bool enable) {

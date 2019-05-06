@@ -8,12 +8,14 @@ namespace Polymer
 		public static Action<bool, string> UPSDKInitFinishedCallback = null;
 
 		//reward ad
+		public static Action<string, string> UPRewardWillOpenCallback = null;
 		public static Action<string, string> UPRewardDidOpenCallback = null;
 		public static Action<string, string> UPRewardDidClickCallback = null;
 		public static Action<string, string> UPRewardDidCloseCallback = null; 
 		public static Action<string, string> UPRewardDidGivenCallback = null;
 		public static Action<string, string> UPRewardDidAbandonCallback = null;
 		//Interstitial ad
+		public static Action<string, string> UPInterstitialWillShowCallback = null;
 		public static Action<string, string> UPInterstitialDidShowCallback = null;
 		public static Action<string, string> UPInterstitialDidCloseCallback = null;
 		public static Action<string, string> UPInterstitialDidClickCallback = null;
