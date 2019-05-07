@@ -143,30 +143,28 @@ public class TestAndroidCall : MonoBehaviour {
 
 
 		if (!inited) {
+
+           
 			UPSDK.UPSDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
+
+			UPSDK.UPInterstitialWillShowCallback=new System.Action<string, string>(actionForInterstitialWillShow);
+			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
 			UPSDK.UPInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
 			UPSDK.UPInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
-			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
+			
 
 			UPSDK.UPBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
 			UPSDK.UPBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
 			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
 
+
+            UPSDK.UPRewardWillOpenCallback=new  System.Action<string, string>(actionForSdkRewardWillOpen);
 			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
 			UPSDK.UPRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
 			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
 			UPSDK.UPRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
 			UPSDK.UPRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
-
-			#if UNITY_ANDROID && !UNITY_EDITOR
-
-			UPSDK.UPExitAdDidShowCallback = new System.Action<string> (actionForSdkExitAdDidShow);
-			UPSDK.UPExitAdDidClickCallback = new System.Action<string> (actionForSdkExitAdDidClick);
-			UPSDK.UPExitAdDidClickMoreCallback = new System.Action<string> (actionForSdkExitAdDidClickMore);
-			UPSDK.UPExitAdOnExitCallback = new System.Action<string> (actionForSdkExitAdOnExit);
-			UPSDK.UPExitAdOnCancelCallback = new System.Action<string> (actionForSdkExitAdOnExit);
-
-			#endif
+			
 		}
 
 		if (TEST_AD) {
@@ -192,44 +190,14 @@ public class TestAndroidCall : MonoBehaviour {
 
 	}
 
-	#if UNITY_ANDROID && !UNITY_EDITOR
-	private void actionForSdkExitAdDidShow(string msg)
-	{
-		Debug.Log ("===> actionForSdkExitAdDidShow Callback");
+	private void actionForSdkInitFinish(bool result, string msg) {
+		Debug.Log ("===> actionForSdkInitFinish Callback r: " + result + ", msg: " + msg);
 	}
 
-	private void actionForSdkExitAdDidClick(string msg)
-	{
-		Debug.Log ("===> actionForSdkExitAdDidClick Callback");
-	}
-
-	private void actionForSdkExitAdDidClickMore(string msg)
-	{
-		Debug.Log ("===> actionForSdkExitAdDidClickMore Callback");
-	}
-
-	private void actionForSdkExitAdOnExit(string msg)
-	{
-		Debug.Log ("===> actionForSdkExitAdOnExit Callback");
-	}
-
-	private void actionForSdkExitAdDidOnCancel(string msg)
-	{
-		Debug.Log ("===> actionForSdkExitAdDidOnCancel Callback");
-	}
-	#endif
+  
 
 	// test for reward video callback
-	private void actionForIntsLoadFail(string placeId, string msg)
-	{
-		Debug.Log ("===> actionForIntsLoadFail Callback at: " + placeId);
-	}
-
-	private void actionForIntsLoadSuccess(string placeId, string msg)
-	{
-		Debug.Log ("===> actionForIntsLoadSuccess Callback at: " + placeId);
-	}
-
+	
 	private void actionForRewardLoadFail(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadFail Callback at: " + placeId);
@@ -239,6 +207,13 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		Debug.Log ("===> actionForRewardLoadSuccess Callback at: " + placeId);
 	}
+
+
+	private void actionForSdkRewardWillOpen(string placeId, string msg)
+	{
+		Debug.Log ("===> actionForSdkRewardWillOpen Callback at: " + placeId);
+	}
+
 
 	private void actionForSdkRewardDidOpen(string placeId, string msg)
 	{
@@ -264,7 +239,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 		Debug.Log ("===> actionForSdkRewardDidAbandon Callback at: " + placeId);
 	}
-
+   // Callback for banner 
 	private void actionForSdkBannerRemove(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForSdkBannerRemove Callback at: " + placeId);
@@ -280,8 +255,19 @@ public class TestAndroidCall : MonoBehaviour {
 		Debug.Log ("===> actionForSdkBannerDidShow Callback at: " + placeId);
 	}
 
-	private void actionForSdkInitFinish(bool result, string msg) {
-		Debug.Log ("===> actionForSdkInitFinish Callback r: " + result + ", msg: " + msg);
+   //  Callback for Interstitial
+    private void actionForIntsLoadFail(string placeId, string msg)
+	{
+		Debug.Log ("===> actionForIntsLoadFail Callback at: " + placeId);
+	}
+
+	private void actionForIntsLoadSuccess(string placeId, string msg)
+	{
+		Debug.Log ("===> actionForIntsLoadSuccess Callback at: " + placeId);
+	}
+
+    private void actionForInterstitialWillShow(string placeId, string msg) {
+		Debug.Log ("===> actionForInterstitialWillShow Callback at: " + placeId);
 	}
 
 	private void actionForInterstitialDidShow(string placeId, string msg) {
