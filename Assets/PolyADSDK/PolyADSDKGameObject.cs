@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PolyXXJSON;
@@ -7,12 +7,14 @@ namespace Polymer {
 
 	public class PolyADSDKGameObject : MonoBehaviour {
 
+		private readonly static string Function_Reward_WillOpen    = "reward_willopen";
 		private readonly static string Function_Reward_DidOpen    = "reward_didopen";
 		private readonly static string Function_Reward_DidClick   = "reward_didclick";
 		private readonly static string Function_Reward_DidClose   = "reward_didclose";
 		private readonly static string Function_Reward_DidGivien  = "reward_didgiven";
 		private readonly static string Function_Reward_DidAbandon = "reward_didabandon";
 
+		private readonly static string Function_Interstitial_Willshow  = "interstitial_willshow";
 		private readonly static string Function_Interstitial_Didshow  = "interstitial_didshow";
 		private readonly static string Function_Interstitial_Didclose = "interstitial_didclose";
 		private readonly static string Function_Interstitial_Didclick = "interstitial_didclick";
@@ -172,7 +174,7 @@ namespace Polymer {
 
 		public void onJavaCallback(string message) {
 			// Debug.Log ("===> onJavaCallback enableCallbackAfterAppFocus: " + enableCallbackAfterAppFocus +",canObserverAppFocusCall: " + canObserverAppFocusCall);
-			if (enableCallbackAfterAppFocus) {
+			if (false && enableCallbackAfterAppFocus) {
 				if (canObserverAppFocusCall) {
 					if (isAppFocus) {
 						if (cachedMessages.Count > 0) {
@@ -190,10 +192,12 @@ namespace Polymer {
 					if (jsonObj.ContainsKey ("function")) {
 						string function = (string)jsonObj ["function"];
 						if (function.Equals (Function_Reward_DidOpen)
+							|| function.Equals	(Function_Reward_WillOpen)
 						    || function.Equals (Function_Reward_DidClick)
 						    || function.Equals (Function_Reward_DidGivien)
 							|| function.Equals (Function_Reward_DidAbandon)
 							|| function.Equals (Function_Interstitial_Didshow)
+							|| function.Equals (Function_Interstitial_Willshow)
 							|| function.Equals (Function_Interstitial_Didclick)) {
 							cachedMessages.Add (message);
 						} else {
@@ -230,7 +234,10 @@ namespace Polymer {
 					msg = (string)jsonObj["message"];
 					placeId = (string)jsonObj["cpadsid"];
 				}
-				Debug.Log ("===> function: " + function +",cpadsid: " + placeId);
+                
+                string strFu = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                Debug.Log ("===> function: " + function +",cpadsid: " + placeId + ", time at:" + strFu);
+                
 				bool isReportOnlineDebug = false;
 				if (adCall != null) {
 					isReportOnlineDebug = adCall.IsReportOnlineEnable ();
@@ -239,15 +246,32 @@ namespace Polymer {
 					}
 				}
 				//reward callback
-				if (function.Equals (Function_Reward_DidOpen)) {
+				if (function.Equals (Function_Reward_WillOpen)) {
+					string fmsg = "";
+					if (UPSDK.UPRewardWillOpenCallback != null) {
+						Debug.Log ("===> function UPRewardWillOpenCallback(): ");
+						UPSDK.UPRewardWillOpenCallback (placeId, msg);
+						fmsg = "UnityPlugin Run UPSDK.UPRewardWillOpenCallback()";
+					} else if (PolyADSDK.OldRewardWillOpenCallback != null) {
+						Debug.Log ("===> function OldRewardWillOpenCallback(): ");
+						PolyADSDK.OldRewardWillOpenCallback (placeId, msg);
+						fmsg = "UnityPlugin Run PolyADSDK.OldRewardWillOpenCallback()";
+					} else {
+						Debug.Log ("===> function call fail, no delegate object. ");
+						fmsg = "can't run RewardWillOpenCallback(), no delegate object.";
+					}
+					if (isReportOnlineDebug) {
+						adCall.reportAdVideoShowDid(fmsg);
+					}
+				} else if (function.Equals (Function_Reward_DidOpen)) {
 					string fmsg = "";
 					if (UPSDK.UPRewardDidOpenCallback != null) {
 						Debug.Log ("===> function UPRewardDidOpenCallback(): ");
 						UPSDK.UPRewardDidOpenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidOpenCallback()";
-					} else if (PolyADSDK.AvidlyRewardDidOpenCallback != null) {
-						Debug.Log ("===> function AvidlyRewardDidOpenCallback(): ");
-						PolyADSDK.AvidlyRewardDidOpenCallback (placeId, msg);
+					} else if (PolyADSDK.OldRewardDidOpenCallback != null) {
+						Debug.Log ("===> function OldRewardDidOpenCallback(): ");
+						PolyADSDK.OldRewardDidOpenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.RewardDidOpenCallback()";
 					} else {
 						Debug.Log ("===> function call fail, no delegate object. ");
@@ -262,8 +286,8 @@ namespace Polymer {
 						UPSDK.UPRewardDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidClickCallback()";
 					}
-					else if (PolyADSDK.AvidlyRewardDidClickCallback != null) {
-						PolyADSDK.AvidlyRewardDidClickCallback (placeId, msg);
+					else if (PolyADSDK.OldRewardDidClickCallback != null) {
+						PolyADSDK.OldRewardDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.RewardDidClickCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -275,8 +299,8 @@ namespace Polymer {
 						UPSDK.UPRewardDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidCloseCallback()";
 					}
-					else if (PolyADSDK.AvidlyRewardDidCloseCallback != null) {
-						PolyADSDK.AvidlyRewardDidCloseCallback (placeId, msg);
+					else if (PolyADSDK.OldRewardDidCloseCallback != null) {
+						PolyADSDK.OldRewardDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.RewardDidCloseCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -288,8 +312,8 @@ namespace Polymer {
 						UPSDK.UPRewardDidGivenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidGivenCallback()";
 					}
-					else if (PolyADSDK.AvidlyRewardDidGivenCallback != null) {
-						PolyADSDK.AvidlyRewardDidGivenCallback (placeId, msg);
+					else if (PolyADSDK.OldRewardDidGivenCallback != null) {
+						PolyADSDK.OldRewardDidGivenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.RewardDidGivenCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -301,8 +325,8 @@ namespace Polymer {
 						UPSDK.UPRewardDidAbandonCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidAbandonCallback()";
 					}
-					else if (PolyADSDK.AvidlyRewardDidAbandonCallback != null) {
-						PolyADSDK.AvidlyRewardDidAbandonCallback (placeId, msg);
+					else if (PolyADSDK.OldRewardDidAbandonCallback != null) {
+						PolyADSDK.OldRewardDidAbandonCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.RewardDidAbandonCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -310,14 +334,28 @@ namespace Polymer {
 					}
 				}
 				//Interstitial callback
+				else if (function.Equals (Function_Interstitial_Willshow)) {
+					string fmsg = "can't run InterstitialWillShowCallback(), no delegate object.";
+					if (UPSDK.UPInterstitialWillShowCallback != null) {
+						UPSDK.UPInterstitialWillShowCallback (placeId, msg);
+						fmsg = "UnityPlugin Run UPSDK.UPInterstitialWillShowCallback()";
+					}
+					else if (PolyADSDK.OldInterstitialWillShowCallback != null) {
+						PolyADSDK.OldInterstitialWillShowCallback (placeId, msg);
+						fmsg = "UnityPlugin Run PolyADSDK.OldInterstitialWillShowCallback()";
+					}
+					if (isReportOnlineDebug) {
+						adCall.reportILDidShow(placeId, fmsg);
+					}
+				}
 				else if (function.Equals (Function_Interstitial_Didshow)) {
 					string fmsg = "can't run InterstitialDidShowCallback(), no delegate object.";
 					if (UPSDK.UPInterstitialDidShowCallback != null) {
 						UPSDK.UPInterstitialDidShowCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidShowCallback()";
 					}
-					else if (PolyADSDK.AvidlyInterstitialDidShowCallback != null) {
-						PolyADSDK.AvidlyInterstitialDidShowCallback (placeId, msg);
+					else if (PolyADSDK.OldInterstitialDidShowCallback != null) {
+						PolyADSDK.OldInterstitialDidShowCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.InterstitialDidShowCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -329,8 +367,8 @@ namespace Polymer {
 						UPSDK.UPInterstitialDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidCloseCallback()";
 					}
-					else if (PolyADSDK.AvidlyInterstitialDidCloseCallback != null) {
-						PolyADSDK.AvidlyInterstitialDidCloseCallback (placeId, msg);
+					else if (PolyADSDK.OldInterstitialDidCloseCallback != null) {
+						PolyADSDK.OldInterstitialDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.InterstitialDidCloseCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -342,8 +380,8 @@ namespace Polymer {
 						UPSDK.UPInterstitialDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidClickCallback()";
 					}
-					else if (PolyADSDK.AvidlyInterstitialDidClickCallback != null) {
-						PolyADSDK.AvidlyInterstitialDidClickCallback (placeId, msg);
+					else if (PolyADSDK.OldInterstitialDidClickCallback != null) {
+						PolyADSDK.OldInterstitialDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run PolyADSDK.InterstitialDidClickCallback()";
 					}
 					if (isReportOnlineDebug) {
@@ -355,22 +393,22 @@ namespace Polymer {
 					if (UPSDK.UPBannerDidClickCallback != null) {
 						UPSDK.UPBannerDidClickCallback (placeId, msg);
 					}
-					else if (PolyADSDK.AvidlyBannerDidClickCallback != null) {
-						PolyADSDK.AvidlyBannerDidClickCallback (placeId, msg);
+					else if (PolyADSDK.OldBannerDidClickCallback != null) {
+						PolyADSDK.OldBannerDidClickCallback (placeId, msg);
 					}
 				} else if (function.Equals (Function_Banner_DidShow)) {
 					if (UPSDK.UPBannerDidShowCallback != null) {
 						UPSDK.UPBannerDidShowCallback (placeId, msg);
 					}
-					else if (PolyADSDK.AvidlyBannerDidShowCallback != null) {
-						PolyADSDK.AvidlyBannerDidShowCallback (placeId, msg);
+					else if (PolyADSDK.OldBannerDidShowCallback != null) {
+						PolyADSDK.OldBannerDidShowCallback (placeId, msg);
 					}
 				} else if (function.Equals (Function_Banner_DidRemove)) {
 					if (UPSDK.UPBannerDidRemoveCallback != null) {
 						UPSDK.UPBannerDidRemoveCallback (placeId, msg);
 					}
-					else if (PolyADSDK.AvidlyBannerDidRemoveCallback != null) {
-						PolyADSDK.AvidlyBannerDidRemoveCallback (placeId, msg);
+					else if (PolyADSDK.OldBannerDidRemoveCallback != null) {
+						PolyADSDK.OldBannerDidRemoveCallback (placeId, msg);
 					}
 				}
 				//icon callback
@@ -400,40 +438,40 @@ namespace Polymer {
 					if (UPSDK.UPExitAdDidShowCallback != null) {
 						UPSDK.UPExitAdDidShowCallback (msg);
 					}
-					else if (PolyADSDK.AvidlyExitAdDidShowCallback != null) {
-						PolyADSDK.AvidlyExitAdDidShowCallback (msg);
+					else if (PolyADSDK.OldExitAdDidShowCallback != null) {
+						PolyADSDK.OldExitAdDidShowCallback (msg);
 					}
 				}
 				else if (function.Equals (Function_ExitAd_DidCancel)) {
 					if (UPSDK.UPExitAdOnCancelCallback != null) {
 						UPSDK.UPExitAdOnCancelCallback (msg);
 					}
-					else if (PolyADSDK.AvidlyExitAdOnCancelCallback!= null) {
-						PolyADSDK.AvidlyExitAdOnCancelCallback (msg);
+					else if (PolyADSDK.OldExitAdOnCancelCallback!= null) {
+						PolyADSDK.OldExitAdOnCancelCallback (msg);
 					}
 				}
 				else if (function.Equals (Function_ExitAd_DidExit)) {
 					if (UPSDK.UPExitAdOnExitCallback != null) {
 						UPSDK.UPExitAdOnExitCallback (msg);
 					}
-					else if (PolyADSDK.AvidlyExitAdOnExitCallback!= null) {
-						PolyADSDK.AvidlyExitAdOnExitCallback (msg);
+					else if (PolyADSDK.OldExitAdOnExitCallback!= null) {
+						PolyADSDK.OldExitAdOnExitCallback (msg);
 					}
 				}
 				else if (function.Equals (Function_ExitAd_DidClick)) {
 					if (UPSDK.UPExitAdDidClickCallback != null) {
 						UPSDK.UPExitAdDidClickCallback (msg);
 					}
-					else if (PolyADSDK.AvidlyExitAdDidClickCallback!= null) {
-						PolyADSDK.AvidlyExitAdDidClickCallback (msg);
+					else if (PolyADSDK.OldExitAdDidClickCallback!= null) {
+						PolyADSDK.OldExitAdDidClickCallback (msg);
 					}
 				}
 				else if (function.Equals (Function_ExitAd_DidClickMore)) {
 					if (UPSDK.UPExitAdDidClickMoreCallback != null) {
 						UPSDK.UPExitAdDidClickMoreCallback (msg);
 					}
-					else if (PolyADSDK.AvidlyExitAdDidClickMoreCallback!= null) {
-						PolyADSDK.AvidlyExitAdDidClickMoreCallback (msg);
+					else if (PolyADSDK.OldExitAdDidClickMoreCallback!= null) {
+						PolyADSDK.OldExitAdDidClickMoreCallback (msg);
 					}
 				}
 				#endif

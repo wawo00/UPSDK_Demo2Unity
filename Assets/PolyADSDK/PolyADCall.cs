@@ -356,8 +356,8 @@ namespace Polymer
 				if (UPSDK.UPSDKInitFinishedCallback != null) {
 					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
 				}
-				else if (PolyADSDK.AvidlySDKInitFinishedCallback != null) {
-					PolyADSDK.AvidlySDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
+				else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
+					PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
 				}
 				return result;
 
@@ -373,15 +373,15 @@ namespace Polymer
 			if (UPSDK.UPSDKInitFinishedCallback != null) {
 				UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
 			}
-			else if (PolyADSDK.AvidlySDKInitFinishedCallback != null) {
-				PolyADSDK.AvidlySDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
+			else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
+				PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
 			}
 			return resule;
 
 			#else
 			// "do nothing";
-			if (PolyADSDK.AvidlySDKInitFinishedCallback != null) {
-				PolyADSDK.AvidlySDKInitFinishedCallback (false, "UPSDK can't ini unkown platform");
+			if (PolyADSDK.OldSDKInitFinishedCallback != null) {
+				PolyADSDK.OldSDKInitFinishedCallback (false, "UPSDK can't ini unkown platform");
 			}
 			return "initSDK ()";
 			#endif

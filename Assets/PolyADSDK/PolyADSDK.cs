@@ -9,31 +9,33 @@ namespace Polymer
 	public class PolyADSDK : PolyBaseApi
 	{
 		
-		public static Action<bool, string> AvidlySDKInitFinishedCallback = null;
+		public static Action<bool, string> OldSDKInitFinishedCallback = null;
 	 
 		//reward ad
-		public static Action<string, string> AvidlyRewardDidOpenCallback = null;
-		public static Action<string, string> AvidlyRewardDidClickCallback = null;
-		public static Action<string, string> AvidlyRewardDidCloseCallback = null; 
-		public static Action<string, string> AvidlyRewardDidGivenCallback = null;
-		public static Action<string, string> AvidlyRewardDidAbandonCallback = null;
+		public static Action<string, string> OldRewardWillOpenCallback = null;
+		public static Action<string, string> OldRewardDidOpenCallback = null;
+		public static Action<string, string> OldRewardDidClickCallback = null;
+		public static Action<string, string> OldRewardDidCloseCallback = null; 
+		public static Action<string, string> OldRewardDidGivenCallback = null;
+		public static Action<string, string> OldRewardDidAbandonCallback = null;
 		//Interstitial ad
-		public static Action<string, string> AvidlyInterstitialDidShowCallback = null;
-		public static Action<string, string> AvidlyInterstitialDidCloseCallback = null;
-		public static Action<string, string> AvidlyInterstitialDidClickCallback = null;
+		public static Action<string, string> OldInterstitialWillShowCallback = null;
+		public static Action<string, string> OldInterstitialDidShowCallback = null;
+		public static Action<string, string> OldInterstitialDidCloseCallback = null;
+		public static Action<string, string> OldInterstitialDidClickCallback = null;
 		//banner ad
-		public static Action<string, string> AvidlyBannerDidShowCallback = null;
-		public static Action<string, string> AvidlyBannerDidClickCallback = null;
-		public static Action<string, string> AvidlyBannerDidRemoveCallback = null;
+		public static Action<string, string> OldBannerDidShowCallback = null;
+		public static Action<string, string> OldBannerDidClickCallback = null;
+		public static Action<string, string> OldBannerDidRemoveCallback = null;
 
-		//public static Action<AvidlyAccessPrivacyInfoStatusEnum, string> AvidlyAccessPrivacyInfoCallback = null;
+		//public static Action<OldAccessPrivacyInfoStatusEnum, string> OldAccessPrivacyInfoCallback = null;
 
 		#if UNITY_ANDROID && !UNITY_EDITOR
-		public static Action<string> AvidlyExitAdDidShowCallback = null;
-		public static Action<string> AvidlyExitAdDidClickCallback = null;
-		public static Action<string> AvidlyExitAdDidClickMoreCallback = null;
-		public static Action<string> AvidlyExitAdOnExitCallback = null;
-		public static Action<string> AvidlyExitAdOnCancelCallback = null;
+		public static Action<string> OldExitAdDidShowCallback = null;
+		public static Action<string> OldExitAdDidClickCallback = null;
+		public static Action<string> OldExitAdDidClickMoreCallback = null;
+		public static Action<string> OldExitAdOnExitCallback = null;
+		public static Action<string> OldExitAdOnCancelCallback = null;
 
 		#endif
 
