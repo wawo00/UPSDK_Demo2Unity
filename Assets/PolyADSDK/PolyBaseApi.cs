@@ -5,10 +5,10 @@ namespace Polymer
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3007.1";
+		private readonly static string Version_Of_Ios_In_Plugin = "3007.4";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3007.1";
-		private readonly static string Version_Of_Plugin = "3007.1";
+		private readonly static string Version_Of_Android_In_Plugin = "3007.4";
+		private readonly static string Version_Of_Plugin = "3007.4";
 	
 
 		private static bool _sInited; 
@@ -34,7 +34,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 初始化avidly的聚合广告
+		 * 初始化upltv的聚合广告
 		 * 即使多次调用，此方法也仅会初始化一次
 		 * @param zone:0，海外；1，中国大陆；2，根据IP自动定位区域
 		 * 具体引用：SDKZONE_FOREIGN，SDKZONE_CHINA，SDKZONE_AUTO
@@ -53,7 +53,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 初始化avidly的聚合广告abtest配置
+		 * 初始化upltv的聚合广告abtest配置
 		 * 
 		 */
 		public static void initAbtConfigJson(string gameAccountId, bool completeTask,
@@ -65,7 +65,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 获取avidly的聚合广告abtest配置
+		 * 获取upltv的聚合广告abtest配置
 		 * 返回结果为Json字符串，可能为null
 		 * 
 		 */
@@ -83,7 +83,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 判断avidly的插屏广告是否填充成功，此方法可用于检查广告是否可以展示
+		 * 判断upltv的插屏广告是否填充成功，此方法可用于检查广告是否可以展示
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 返回结果为bool值
 		 * 
@@ -97,7 +97,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 判断avidly的激励视屏广告是否填充成功，此方法可用于检查广告是否可以展示
+		 * 判断upltv的激励视屏广告是否填充成功，此方法可用于检查广告是否可以展示
 		 * 返回结果为bool值
 		 * 
 		 */
@@ -110,7 +110,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的插屏广告
+		 * 用于展示upltv的插屏广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * @deprecated 方法名拼写错误
 		 * 建议使用showInterstitialAd()
@@ -123,7 +123,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的插屏广告
+		 * 用于展示upltv的插屏广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 用于替换showIntersitialAd()
 		 */
@@ -134,7 +134,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的激励视屏广告
+		 * 用于展示upltv的激励视屏广告
 		 * @param cpCustomId，用户自定义广告位，区分收益来源，不能为空，否则广告无法显示
 		 */
 		public static void showRewardAd(string cpCustomId)
@@ -145,7 +145,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 增加对avidly的激励视屏广告加载的回调接口
+		 * 增加对upltv的激励视屏广告加载的回调接口
 		 * @param cpPlaceId: 第一个参数，插屏广告位标识符，不能为空或null
 		 * @param success 第二个参数，加载成功后的回调
 		 * @param fail 第三个参数，加载失败后的回调
@@ -162,7 +162,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 增加对avidly的激励视屏广告加载的回调接口
+		 * 增加对upltv的激励视屏广告加载的回调接口
 		 * @param success 第一个参数，加载成功后的回调
 		 * @param fail 第二个参数，加载失败后的回调
 		 * 
@@ -178,7 +178,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的Banner广告
+		 * 用于展示upltv的Banner广告
 		 * 此类广告将自动展现在当前应用界面的顶部
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
@@ -191,7 +191,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的Banner广告
+		 * 用于展示upltv的Banner广告
 		 * 此类广告将自动展现在当前应用界面的底部
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
@@ -226,7 +226,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 根据广告位，删除avidly的Banner广告
+		 * 根据广告位，删除upltv的Banner广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 */
 		public static void removeBannerAdAt(string cpPlaceId)
@@ -264,20 +264,20 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于向avidly设置安卓平台Manifest中定义的PackageName
+		 * 用于向upltv设置安卓平台Manifest中定义的PackageName
 		 * Manifest中定义的PackageName与最终包名是不一样，为了避免admob的广告无法显示
-		 * 在此情况下，请向avidly正确配置Manifest中定义的PackageName
-		 * 自己2031版本，adomb不再要求调用此方法
+		 * 在此情况下，请向upltv正确配置Manifest中定义的PackageName
+		 * 自2031版本，adomb不再要求调用此方法
 		 * 对于ios平台，请忽略此方法
 		 */
 		public static void setManifestPackageName(string packagename) {
-			if (polyCall != null && int.Parse(Version_Of_Android_In_Plugin) < 2031) {
-				polyCall.setManifestPackageName (packagename);
-			}
+			//if (polyCall != null && int.Parse(Version_Of_Android_In_Plugin) < 2031) {
+			//	polyCall.setManifestPackageName (packagename);
+			//}
 		}
 
 		/*
-		 * 用于展示avidly的在安卓平台的退出广告
+		 * 用于展示upltv的在安卓平台的退出广告
 		 * 
 		 */
 		public static void onBackPressed()
@@ -295,7 +295,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的激励视屏广告调试界面
+		 * 用于展示upltv的激励视屏广告调试界面
 		 * supported from 2028
 		 */
 		public static void showRewardDebugView() {
@@ -305,7 +305,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示avidly的插屏广告调试界面
+		 * 用于展示upltv的插屏广告调试界面
 		 * supported from 2028
 		 */
 		public static void showInterstitialDebugView() {
@@ -326,7 +326,7 @@ namespace Polymer
      	* 如果以上条件不成立，即使调用以下方法，SDK也会自动忽略
      	* supported from 3002
      	*/
-		public static void loadAvidlyAdsByManual() {
+		public static void loadupltvAdsByManual() {
 			if (polyCall != null) {
 				polyCall.loadUpAdsByManual ();
 			}
