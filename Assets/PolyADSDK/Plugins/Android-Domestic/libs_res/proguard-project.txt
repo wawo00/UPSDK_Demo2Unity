@@ -133,7 +133,7 @@
 # chartboost end
 
 # playable
--keep class com.avidly.playablead.app.** { *; }
+-keep class com.sw.playablead.app.** { *; }
 # playable end
 
 # ironsource
