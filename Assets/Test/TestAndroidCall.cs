@@ -131,7 +131,7 @@ public class TestAndroidCall : MonoBehaviour
 
 	public void onBtnGetABConfig_Click ()
 	{
-		string r = UPSDK.getAbtConfig ("hello");
+		string r = UPSDK.getAbtConfig ("gameAwake");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
 
@@ -173,6 +173,7 @@ public class TestAndroidCall : MonoBehaviour
 			UPSDK.UPBannerDidClickCallback = new System.Action<string, string> (actionForSdkBannerDidClick);
 			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string> (actionForSdkBannerRemove);
 
+
 			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string> (actionForSdkRewardDidOpen);
 			UPSDK.UPRewardDidClickCallback = new System.Action<string, string> (actionForSdkRewardDidClick);
 			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string> (actionForSdkRewardDidClose);
@@ -197,7 +198,6 @@ public class TestAndroidCall : MonoBehaviour
 			Text text = GameObject.Find ("CallText").GetComponent<Text> ();
 
 			//text.text = PolyADSDK.testCall ();
-			PolyADSDK.setCustomerIdForAndroid ("PolyADSDK");
 			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
 			// UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
