@@ -29,19 +29,18 @@ public class TestAndroidCall : MonoBehaviour {
 
 	public void onBtnIntertitialClick() 
 	{
-		//inter_aaa
-		//inter_ccc
+
 		UPSDK.showIntersitialAd("sample_inter");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
 	{
-		UPSDK.showIntersitialAd("rewarded_video");
+		UPSDK.showIntersitialAd("sample_inter");
 	}
 
 	public void onBtnReward_aaa_Click()
 	{
-		UPSDK.showRewardAd("aaa");
+		UPSDK.showRewardAd("rewarded_video");
 	}
 
 	public void onBtnBanner_Top_Click()
@@ -109,7 +108,7 @@ public class TestAndroidCall : MonoBehaviour {
 
 	public void onBtnGetABConfig_Click()
 	{
-		string r = UPSDK.getAbtConfig ("hello");
+		string r = UPSDK.getAbtConfig ("freeCoins");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
 	 
