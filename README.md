@@ -1,6 +1,16 @@
-# UPSDK_Demo2Unity
+# upltv-unity-mediation-demo
 
-This is the demo of unity with UPSDK in Android devices ,if you have any problems ,you can read this doc http://docs.upltv.com/zh/master/index.html  and this for English http://doc.upltv.com/en/master/index.html
+## 亲爱的开发者
+
+ foregin 分支适用于发行地区是除了中国大陆境内的其他地区，主要渠道是google play
+<br/>
+ domestic       分支适用于发行地区是大陆境内，主要渠道是taptap 或者其他国内市场
+<br/>
+
+如果您有任何疑问，可以参考我们的[帮助文档](https://www.upltv.com/doc/ "help doc"). 
+
+## Dear developers
+This is an simple demo for upsdk  builded with Cocos2dx-JavaScript,if you have any problems,you can reference our [Help Document](hhttps://www.upltv.com/doc/dashboard?id=ff0c8283-a6ed-4ec6-a16e-fffa9e570ba8&name=Get%2520started&lang=en-US "help doc")
 
 # 注意
 1.打包APK时请使用gradle模式来进行打包
