@@ -10,7 +10,7 @@
 如果您有任何疑问，可以参考我们的[帮助文档](https://www.upltv.com/doc/ "help doc"). 
 
 ## Dear developers
-This is an simple demo for upsdk  builded with Cocos2dx-JavaScript,if you have any problems,you can reference our [Help Document](hhttps://www.upltv.com/doc/dashboard?id=ff0c8283-a6ed-4ec6-a16e-fffa9e570ba8&name=Get%2520started&lang=en-US "help doc")
+This is an simple demo for upsdk  builded with Unity 2017.f4.1,if you have any problems,you can reference our [Help Document](https://www.upltv.com/doc/dashboard?id=ff0c8283-a6ed-4ec6-a16e-fffa9e570ba8&name=Get%2520started&lang=en-US "help doc")
 
 # 注意
 1.打包APK时请使用gradle模式来进行打包
