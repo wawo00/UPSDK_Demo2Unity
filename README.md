@@ -15,3 +15,7 @@ This is an simple demo for upsdk  builded with Unity 2017.f4.1,if you have any p
 ## Note
 1.Please use gradle to build apk
 2.The password of keystore is 123456
+
+## **注意** 请使用unity 中custom gradle来进行编译
+## **Attention** Please use custome gradle file to build your project
+![image](https://github.com/upltv/upltv-unity-mediation-demo/blob/3007_foreign/img/gradleTemple.png)
