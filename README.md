@@ -15,3 +15,6 @@ This is an simple demo for upsdk  builded with Unity 2017.f4.1,if you have any p
 # 注意
 1.打包APK时请使用gradle模式来进行打包
 2.打包时候密码是 123456
+
+## **注意** 请使用unity 中custom gradle来进行编译
+![image](https://github.com/upltv/upltv-unity-mediation-demo/blob/3007_foreign/img/gradleTemple.png)
