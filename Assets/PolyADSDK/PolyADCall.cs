@@ -1,4 +1,4 @@
-﻿
+
 using UnityEngine;
 using System;
 using System.Collections;
@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace Polymer
 {
-	public class PolyADCall {
+	public class PolyADCall
+	{
 
 
 
@@ -105,8 +106,12 @@ namespace Polymer
 			[DllImport("__Internal")]
 			private static extern bool IsIosReportOnlineEnable();
 
+            [DllImport("__Internal")]
+            private static extern bool isLogOpened();
 
-		#elif UNITY_ANDROID && !UNITY_EDITOR
+
+		
+#elif UNITY_ANDROID && !UNITY_EDITOR
 			private static AndroidJavaClass jc = null;
 			private readonly static string JavaClassName = "com.up.ads.unity.PolyProxy";
 			private readonly static string JavaClassStaticMethod_IniSDKByZone = "iniSDKByZone";
@@ -150,14 +155,17 @@ namespace Polymer
 			private readonly static string JavaClassStaticMethod_ReportILClose = "reportILClose";
 
 			private readonly static string JavaClassStaticMethod_IsReportOnlineEnable = "isReportOnlineEnable";
-
 			private readonly static string JavaClassStaticMethod_ReportIvokePluginMethodReceive = "reportIvokePluginMethodReceive";
 
-		#else
+			private readonly static string JavaClassStaticMethod_IsLogOpened = "isLogOpened";
+			private readonly static string JavaClassStaticMethod_SetIsChild = "setIsChild";
+		
+#else
 		// "do nothing";
 		#endif
 
-		public string getPlatformName() {
+		public string getPlatformName ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 			return "UNITY_IOS";
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -167,7 +175,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void loadUpAdsByManual() {
+		public void loadUpAdsByManual ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 			loadAdsByManual();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -178,7 +187,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void setTopBannerForAndroid(int padding) {
+		public void setTopBannerForAndroid (int padding)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -189,7 +199,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void setTopBannerForIphonex(int padding) {
+		public void setTopBannerForIphonex (int padding)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				setTopBannerPadingForIphonex(padding);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -197,7 +208,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void printInfo() {
+		public void printInfo ()
+		{
 			
 			#if UNITY_IOS && !UNITY_EDITOR
 
@@ -209,7 +221,8 @@ namespace Polymer
 			#endif
 		}
 
-		public PolyADCall() {
+		public PolyADCall ()
+		{
 			PolyADSDKGameObject.getInstance ().setPolyADCall (this);
 			#if UNITY_IOS && !UNITY_EDITOR
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -221,7 +234,7 @@ namespace Polymer
 		}
 
 
-		public bool IsReportOnlineEnable()
+		public bool IsReportOnlineEnable ()
 		{
 			
 			#if UNITY_IOS && !UNITY_EDITOR
@@ -238,7 +251,8 @@ namespace Polymer
 
 		}
 
-		public void reportAdVideoRewardGiven(string msg) {
+		public void reportAdVideoRewardGiven (string msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportRDRewardGiven(msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -249,7 +263,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportAdVideoRewardCancel(string msg) {
+		public void reportAdVideoRewardCancel (string msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportRDRewardCancel(msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -260,7 +275,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportAdVideoClick(string msg) {
+		public void reportAdVideoClick (string msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportRDRewardClick(msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -270,8 +286,9 @@ namespace Polymer
 			}
 			#endif
 		}
-			
-		public void reportAdVideoClose(string msg) {
+
+		public void reportAdVideoClose (string msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportRDRewardClose(msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -282,7 +299,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportAdVideoShowDid(string msg) {
+		public void reportAdVideoShowDid (string msg)
+		{
 			
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportRDShowDid(msg);
@@ -294,7 +312,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportILDidShow(String cpPlaceId, String msg) {
+		public void reportILDidShow (String cpPlaceId, String msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportILShowDidCall(cpPlaceId, msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -305,7 +324,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportILClick(String cpPlaceId, String msg) {
+		public void reportILClick (String cpPlaceId, String msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportILClickCall(cpPlaceId, msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -316,7 +336,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportILClose(String cpPlaceId, String msg) {
+		public void reportILClose (String cpPlaceId, String msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportILCloseCall(cpPlaceId, msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -327,7 +348,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void reportPluginInvokeMethodCall(string msg) {
+		public void reportPluginInvokeMethodCall (string msg)
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				reportInvokeMethodReceive(msg);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -338,13 +360,15 @@ namespace Polymer
 			#endif
 
 		}
-			
-		public void RunCallbackAfterAppFocus(bool enable) {
+
+		public void RunCallbackAfterAppFocus (bool enable)
+		{
 			PolyADSDKGameObject.getInstance ().RunCallbackAfterAppFocus (enable);
 		}
 
 		// Use this for initialization
-		public string initSDK (int azone) {
+		public string initSDK (int azone)
+		{
 
 
 
@@ -391,7 +415,8 @@ namespace Polymer
 			//return "initSDK ()";
 		}
 
-		private string stringAryToString(string [] tags) {
+		private string stringAryToString (string[] tags)
+		{
 			if (tags == null || tags.Length == 0) {
 				return "";
 			}
@@ -410,9 +435,10 @@ namespace Polymer
 			return str;
 		}
 
-		public void initAbtConfigJson(string gameAccountId, bool completeTask,
-			int isPaid, string promotionChannelName,  string gender,
-			int age, string[] tags){
+		public void initAbtConfigJson (string gameAccountId, bool completeTask,
+		                              int isPaid, string promotionChannelName, string gender,
+		                              int age, string[] tags)
+		{
 			 
 			#if UNITY_IOS && !UNITY_EDITOR
 				initAbtConfigJsonForIos(gameAccountId, completeTask, isPaid, promotionChannelName, gender, age, stringAryToString(tags));
@@ -424,7 +450,8 @@ namespace Polymer
 			#endif
 		}
 
-		public string getAbtConfig(string cpPlaceId){
+		public string getAbtConfig (string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call getAbtConfig(), the param cpPlaceId can't be null. ");
 				return "";
@@ -438,11 +465,11 @@ namespace Polymer
 			}
 			return "";
 			#else
-				return "";
+			return "";
 			#endif
 		}
 
-		public void setManifestPackageName(string packagename)
+		public void setManifestPackageName (string packagename)
 		{
 			#if UNITY_IOS && !UNITY_EDITOR
 			 
@@ -454,10 +481,11 @@ namespace Polymer
 			#endif
 		}
 
-		public void setCustomerId(string curstomerId) {
+		public void setCustomerId (string curstomerId)
+		{
 
 			if (curstomerId == null) {
-				Debug.Log ("===> fail to call setCustomerId(), curstomerId can't be null." );
+				Debug.Log ("===> fail to call setCustomerId(), curstomerId can't be null.");
 				return;
 			}
 
@@ -471,7 +499,7 @@ namespace Polymer
 			#endif
 		}
 
-		public void removeBanner(string cpPlaceId)
+		public void removeBanner (string cpPlaceId)
 		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call removeBanner(), the param cpPlaceId can't be null. ");
@@ -489,25 +517,30 @@ namespace Polymer
 			 
 		}
 
-		public void setRewardVideoLoadFailCallback(Action<string, string> call) {
+		public void setRewardVideoLoadFailCallback (Action<string, string> call)
+		{
 			PolyADSDKGameObject.getInstance ().setRewardVideoLoadFailCallback (call);
 		}
 
-		public void setRewardVideoLoadSuccessCallback(Action<string, string> call) {
+		public void setRewardVideoLoadSuccessCallback (Action<string, string> call)
+		{
 			PolyADSDKGameObject.getInstance ().setRewardVideoLoadSuccessCallback (call);
 		}
 
-		public void addIntsLoadFailCallback(string cpPlaceId, Action<string, string> call) {
+		public void addIntsLoadFailCallback (string cpPlaceId, Action<string, string> call)
+		{
 			PolyADSDKGameObject.getInstance ().addIntsLoadFailCallback (cpPlaceId, call);
 
 		}
 
-		public void addIntsLoadSuccessCallback(string cpPlaceId, Action<string, string> call) {
+		public void addIntsLoadSuccessCallback (string cpPlaceId, Action<string, string> call)
+		{
 			PolyADSDKGameObject.getInstance ().addIntsLoadSuccessCallback (cpPlaceId, call);
 
 		}
 
-		public void isEuropeanUnionUser(Action<bool, string> callback) {
+		public void isEuropeanUnionUser (Action<bool, string> callback)
+		{
 			PolyADSDKGameObject.getInstance ().setCheckEuropeanUserCallback (callback);
 			#if UNITY_IOS && !UNITY_EDITOR
 				checkIsEuropeanUnionUser(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
@@ -519,7 +552,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void notifyAccessPrivacyInfoStatus(Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback) {
+		public void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback)
+		{
 			PolyADSDKGameObject.getInstance ().setAccessPrivacyInformationCallback (callback);
 
 			#if UNITY_IOS && !UNITY_EDITOR
@@ -533,20 +567,21 @@ namespace Polymer
 
 		}
 
-		public void setAccessPrivacyInfoStatus(UPConstant.UPAccessPrivacyInfoStatusEnum value) {
+		public void setAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum value)
+		{
 			int result = 0;
 			switch (value) {
-				case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusAccepted:
+			case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusAccepted:
 				{
 					result = 1;
 					break;
 				}
-				case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusDefined:
+			case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusDefined:
 				{
 					result = 2;
 					break;
 				}
-				default:
+			default:
 				{
 					result = 0;
 					break;
@@ -562,7 +597,8 @@ namespace Polymer
 			#endif
 		}
 
-		public UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus() {
+		public UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus ()
+		{
 
 
 			#if UNITY_IOS && !UNITY_EDITOR
@@ -591,7 +627,8 @@ namespace Polymer
 
 
 
-		public void callRewardVideoLoadCallback() {
+		public void callRewardVideoLoadCallback ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				setRewardloadCallback();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -603,7 +640,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void callInterstitialCallbackAt(string cpPlaceId) {
+		public void callInterstitialCallbackAt (string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call setInterstitialCallbackAt(), the param cpPlaceId can't be null. ");
 				return;
@@ -620,7 +658,7 @@ namespace Polymer
 			#endif
 		}
 
-		public bool isInterstitialAdReady(string cpPlaceId)
+		public bool isInterstitialAdReady (string cpPlaceId)
 		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call isInterstitialAdReady(), the param cpPlaceId can't be null. ");
@@ -640,7 +678,7 @@ namespace Polymer
 
 		}
 
-		public bool isRewardAdReady()
+		public bool isRewardAdReady ()
 		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				return isRewardReady();
@@ -655,12 +693,12 @@ namespace Polymer
 			#endif
 
 		}
-	
-		public void showInterstitialAd(string cpPlaceId)
+
+		public void showInterstitialAd (string cpPlaceId)
 		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call isInterstitialAdReady(), the param cpPlaceId can't be null. ");
-				return ;
+				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
 				showInterstitial(cpPlaceId);
@@ -673,7 +711,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void hideBannerAtTop() {
+		public void hideBannerAtTop ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				hideTopBanner();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -685,7 +724,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void hideBannerAtBottom() {
+		public void hideBannerAtBottom ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				hideBottomBanner();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -697,7 +737,7 @@ namespace Polymer
 			#endif
 		}
 
-		public void showRewardAd(string cpCustomId)
+		public void showRewardAd (string cpCustomId)
 		{
 			if (cpCustomId == null) {
 				Debug.Log ("===> call showRewardAd(), the param cpCustomId be null. ");
@@ -713,10 +753,11 @@ namespace Polymer
 			#endif
 		}
 
-		public void showBannerAdAtTop(string cpPlaceId) {
+		public void showBannerAdAtTop (string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showBannerAdAtTop(), the param cpPlaceId can't be null. ");
-				return ;
+				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
 			showBannerTop(cpPlaceId);
@@ -738,10 +779,11 @@ namespace Polymer
 		 * @param rotationAngle: 顺时针旋转角度
 		 * @param cpPlaceId: Icon广告位标识符
 		 */
-		public void showIconAd(double x, double y, double width, double height, double rotationAngle, string cpPlaceId) {
+		public void showIconAd (double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showIconAd(), the param cpPlaceId can't be null. ");
-				return ;
+				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
 			showIcon(x,y,width,height,rotationAngle,cpPlaceId);
@@ -757,10 +799,11 @@ namespace Polymer
 		 * 根据广告位，删除aUPSDK的Icon广告
 		 * @param cpPlaceId: Icon广告位标识符
 		 */
-		public void removeIconAd(string cpPlaceId) {
+		public void removeIconAd (string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call removeIcon(), the param cpPlaceId can't be null. ");
-				return ;
+				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
 			removeIcon(cpPlaceId);
@@ -772,10 +815,11 @@ namespace Polymer
 			#endif
 		}
 
-		public void showBannerAdAtBottom(string cpPlaceId) {
+		public void showBannerAdAtBottom (string cpPlaceId)
+		{
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showBannerAdAtBottom(), the param cpPlaceId can't be null. ");
-				return ;
+				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
 			showBannerBottom (cpPlaceId);
@@ -787,7 +831,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void onBackPressed() {
+		public void onBackPressed ()
+		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) 
 			{
@@ -796,7 +841,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void OnApplicationFocus(bool hasfoucus) {
+		public void OnApplicationFocus (bool hasfoucus)
+		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) 
 			{
@@ -804,8 +850,9 @@ namespace Polymer
 			}
 			#endif
 		}
- 
-		public void showRewardDebugView() {
+
+		public void showRewardDebugView ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 				showRewardDebugController ();
 			#elif   UNITY_ANDROID && !UNITY_EDITOR
@@ -816,7 +863,8 @@ namespace Polymer
 			#endif
 		}
 
-		public void showInterstitialDebugView() {
+		public void showInterstitialDebugView ()
+		{
 			//
 			#if UNITY_IOS && !UNITY_EDITOR
 				showInterstitialDebugController();
@@ -829,13 +877,38 @@ namespace Polymer
 			#endif
 		}
 
-//		private void showBannerAd(string cpPlaceId, int type) {
-//			#if UNITY_IOS //&& !UNITY_EDITOR
-//			showBanner(cpPlaceId, type);
-//			#elif UNITY_ANDROID && !UNITY_EDITOR
-//
-//			#endif
-//		}
+		public bool isSdkLogOpened ()
+		{
+			#if UNITY_IOS && !UNITY_EDITOR
+			return isLogOpened();
+			#elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+			return jc.CallStatic<bool> (JavaClassStaticMethod_IsLogOpened);
+			}
+			return false;
+			#else
+			return false;
+			#endif
+		}
+
+		public void setIsChild (bool isChild)
+		{
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+				jc.CallStatic (JavaClassStaticMethod_SetIsChild, isChild);
+			}
+			#endif
+		}
+
+		//		private void showBannerAd(string cpPlaceId, int type) {
+		//			#if UNITY_IOS //&& !UNITY_EDITOR
+		//			showBanner(cpPlaceId, type);
+		//			#elif UNITY_ANDROID && !UNITY_EDITOR
+		//
+		//			#endif
+		//		}
 
 
 	}

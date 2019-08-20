@@ -5,16 +5,17 @@ namespace Polymer
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3007.6";
+		private readonly static string Version_Of_Ios_In_Plugin = "3008.1";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3007.6";
-		private readonly static string Version_Of_Plugin = "3007.6";
+		private readonly static string Version_Of_Android_In_Plugin = "3008.1";
+		private readonly static string Version_Of_Plugin = "3008.1";
 	
 
-		private static bool _sInited; 
+		private static bool _sInited;
 		private static PolyADCall polyCall = null;
 
-		public static string getVersionOfPlugin() {
+		public static string getVersionOfPlugin ()
+		{
 			return Version_Of_Plugin;
 		}
 
@@ -23,7 +24,8 @@ namespace Polymer
 		 * 此版本号一般取android与ios两者最大版本号
 		 * 
 		 */
-		public static string getVersionOfPlatform() {
+		public static string getVersionOfPlatform ()
+		{
 			#if UNITY_IOS && !UNITY_EDITOR
 			return Version_Of_Ios_In_Plugin;
 			#elif UNITY_ANDROID && !UNITY_EDITOR
@@ -40,7 +42,7 @@ namespace Polymer
 		 * 具体引用：SDKZONE_FOREIGN，SDKZONE_CHINA，SDKZONE_AUTO
 		 * from 2030,initPolyAdSDK()增加zone参数
 		 */
-		public static string initPolyAdSDK(int zone)
+		public static string initPolyAdSDK (int zone)
 		{
 			if (_sInited) {
 				return "initPolyAdSDK finished";
@@ -56,9 +58,10 @@ namespace Polymer
 		 * 初始化upltv的聚合广告abtest配置
 		 * 
 		 */
-		public static void initAbtConfigJson(string gameAccountId, bool completeTask,
-			int isPaid, string promotionChannelName,  string gender,
-			int age, string[] tags) {
+		public static void initAbtConfigJson (string gameAccountId, bool completeTask,
+		                                      int isPaid, string promotionChannelName, string gender,
+		                                      int age, string[] tags)
+		{
 			if (polyCall != null) {
 				polyCall.initAbtConfigJson (gameAccountId, completeTask, isPaid, promotionChannelName, gender, age, tags);
 			}
@@ -69,10 +72,11 @@ namespace Polymer
 		 * 返回结果为Json字符串，可能为null
 		 * 
 		 */
-		public static string getAbtConfig(string placementId) {
+		public static string getAbtConfig (string placementId)
+		{
 			if (polyCall != null) {
 				string r = polyCall.getAbtConfig (placementId);
-				if (r == null || r.Length == 0 || r.Equals("{}")) {
+				if (r == null || r.Length == 0 || r.Equals ("{}")) {
 					return null;
 				} else {
 					return r;
@@ -88,7 +92,7 @@ namespace Polymer
 		 * 返回结果为bool值
 		 * 
 		 */
-		public static bool isInterstitialReady(string cpPlaceId)
+		public static bool isInterstitialReady (string cpPlaceId)
 		{
 			if (polyCall != null) {
 				return polyCall.isInterstitialAdReady (cpPlaceId);
@@ -101,7 +105,7 @@ namespace Polymer
 		 * 返回结果为bool值
 		 * 
 		 */
-		public static bool isRewardReady()
+		public static bool isRewardReady ()
 		{
 			if (polyCall != null) {
 				return polyCall.isRewardAdReady ();
@@ -115,7 +119,7 @@ namespace Polymer
 		 * @deprecated 方法名拼写错误
 		 * 建议使用showInterstitialAd()
 		 */
-		public static void showIntersitialAd(string cpPlaceId)
+		public static void showIntersitialAd (string cpPlaceId)
 		{
 			if (polyCall != null) {
 				polyCall.showInterstitialAd (cpPlaceId);
@@ -127,7 +131,8 @@ namespace Polymer
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 用于替换showIntersitialAd()
 		 */
-		public static void showInterstitialAd(string cpPlaceId) {
+		public static void showInterstitialAd (string cpPlaceId)
+		{
 			if (polyCall != null) {
 				polyCall.showInterstitialAd (cpPlaceId);
 			}
@@ -137,7 +142,7 @@ namespace Polymer
 		 * 用于展示upltv的激励视屏广告
 		 * @param cpCustomId，用户自定义广告位，区分收益来源，不能为空，否则广告无法显示
 		 */
-		public static void showRewardAd(string cpCustomId)
+		public static void showRewardAd (string cpCustomId)
 		{
 			if (polyCall != null) {
 				polyCall.showRewardAd (cpCustomId);
@@ -153,7 +158,8 @@ namespace Polymer
 		 * 回调参数类型：Action<string,string>，第一个为cpPlaceId，广告位，可能为空或null；第二个参数为描述信息，可能为空或null
 		 * supported from 2028
 		 */
-		public static void setIntersitialLoadCallback(string cpPlaceId, Action<string,string> success, Action<string, string> fail) {
+		public static void setIntersitialLoadCallback (string cpPlaceId, Action<string,string> success, Action<string, string> fail)
+		{
 			if (polyCall != null && cpPlaceId != null && cpPlaceId.Length > 0) {
 				polyCall.addIntsLoadFailCallback (cpPlaceId, fail);
 				polyCall.addIntsLoadSuccessCallback (cpPlaceId, success);
@@ -169,7 +175,8 @@ namespace Polymer
 		 * 回调参数类型：Action<string,string>，第一个为cpPlaceId，广告位，可能为空或null；第二个参数为描述信息，可能为空或null
 		 * supported from 2028
 		 */
-		public static void setRewardVideoLoadCallback(Action<string,string> success, Action<string, string> fail) {
+		public static void setRewardVideoLoadCallback (Action<string,string> success, Action<string, string> fail)
+		{
 			if (polyCall != null) {
 				polyCall.setRewardVideoLoadFailCallback (fail);
 				polyCall.setRewardVideoLoadSuccessCallback (success);
@@ -183,7 +190,7 @@ namespace Polymer
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
 		 */
-		public static void showBannerAdAtTop(string cpPlaceId)
+		public static void showBannerAdAtTop (string cpPlaceId)
 		{
 			if (polyCall != null) {
 				polyCall.showBannerAdAtTop (cpPlaceId);
@@ -196,7 +203,7 @@ namespace Polymer
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
 		 */
-		public static void showBannerAdAtBottom(string cpPlaceId)
+		public static void showBannerAdAtBottom (string cpPlaceId)
 		{
 			if (polyCall != null) {
 				polyCall.showBannerAdAtBottom (cpPlaceId);
@@ -208,7 +215,8 @@ namespace Polymer
 		 * 再次展示时，需要调用showBannerAdAtTop()
 		 * from 2037开始支持
 		 */
-		public static void hideBannerAdAtTop() {
+		public static void hideBannerAdAtTop ()
+		{
 			if (polyCall != null) {
 				polyCall.hideBannerAtTop ();
 			}
@@ -219,7 +227,8 @@ namespace Polymer
 		 * 再次展示时，需要调用showBannerAdAtBottom()
 		 * from 2037开始支持
 		 */
-		public static void hideBannerAdAtBottom() {
+		public static void hideBannerAdAtBottom ()
+		{
 			if (polyCall != null) {
 				polyCall.hideBannerAtBottom ();
 			}
@@ -229,7 +238,7 @@ namespace Polymer
 		 * 根据广告位，删除upltv的Banner广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 */
-		public static void removeBannerAdAt(string cpPlaceId)
+		public static void removeBannerAdAt (string cpPlaceId)
 		{
 			if (polyCall != null) {
 				polyCall.removeBanner (cpPlaceId);
@@ -245,7 +254,7 @@ namespace Polymer
 		 * @param rotationAngle: 顺时针旋转角度(Android平台无效)
 		 * @param cpPlaceId: 广告位标识符
 		 */
-		public static void showIconAd(double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
+		public static void showIconAd (double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
 		{
 			if (polyCall != null) {
 				polyCall.showIconAd (x, y, width, height, rotationAngle, cpPlaceId);
@@ -256,10 +265,10 @@ namespace Polymer
 		 * 根据广告位，删除aUPSDK的Icon广告
 		 * @param cpPlaceId: 广告位标识符
 		 */
-		public static void removeIconAdAt(string cpPlaceId)
+		public static void removeIconAdAt (string cpPlaceId)
 		{
 			if (polyCall != null) {
-				polyCall.removeIconAd(cpPlaceId);
+				polyCall.removeIconAd (cpPlaceId);
 			}
 		}
 
@@ -270,7 +279,8 @@ namespace Polymer
 		 * 自2031版本，adomb不再要求调用此方法
 		 * 对于ios平台，请忽略此方法
 		 */
-		public static void setManifestPackageName(string packagename) {
+		public static void setManifestPackageName (string packagename)
+		{
 			//if (polyCall != null && int.Parse(Version_Of_Android_In_Plugin) < 2031) {
 			//	polyCall.setManifestPackageName (packagename);
 			//}
@@ -280,14 +290,14 @@ namespace Polymer
 		 * 用于展示upltv的在安卓平台的退出广告
 		 * 
 		 */
-		public static void onBackPressed()
+		public static void onBackPressed ()
 		{
 			if (polyCall != null) {
 				polyCall.onBackPressed ();
 			}
 		}
 
-		public static void OnApplicationFocus(bool hasfoucus)
+		public static void OnApplicationFocus (bool hasfoucus)
 		{
 			if (polyCall != null) {
 				polyCall.OnApplicationFocus (hasfoucus);
@@ -298,7 +308,8 @@ namespace Polymer
 		 * 用于展示upltv的激励视屏广告调试界面
 		 * supported from 2028
 		 */
-		public static void showRewardDebugView() {
+		public static void showRewardDebugView ()
+		{
 			if (polyCall != null) {
 				polyCall.showRewardDebugView ();
 			}
@@ -308,13 +319,15 @@ namespace Polymer
 		 * 用于展示upltv的插屏广告调试界面
 		 * supported from 2028
 		 */
-		public static void showInterstitialDebugView() {
+		public static void showInterstitialDebugView ()
+		{
 			if (polyCall != null) {
 				polyCall.showInterstitialDebugView ();
 			}
 		}
 
-		public static void printDebugInfo() {
+		public static void printDebugInfo ()
+		{
 			if (polyCall != null) {
 				polyCall.printInfo ();
 			}
@@ -326,7 +339,8 @@ namespace Polymer
      	* 如果以上条件不成立，即使调用以下方法，SDK也会自动忽略
      	* supported from 3002
      	*/
-		public static void loadupltvAdsByManual() {
+		public static void loadupltvAdsByManual ()
+		{
 			if (polyCall != null) {
 				polyCall.loadUpAdsByManual ();
 			}
@@ -337,7 +351,8 @@ namespace Polymer
      	* @param padding: 顶部Banner的偏移值，如32，则状态样会向下偏移32像素
      	* supported from 3002
      	*/
-		public static void setTopBannerForIphonex(int padding) {
+		public static void setTopBannerForIphonex (int padding)
+		{
 			if (polyCall != null) {
 				polyCall.setTopBannerForIphonex (padding);
 			}
@@ -348,7 +363,8 @@ namespace Polymer
      	* @param padding: 顶部Banner的偏移值，如32，则状态样会向下偏移75像素
      	* supported from 3004
      	*/
-		public static void setTopBannerForHuaWeiP20(int padding) {
+		public static void setTopBannerForHuaWeiP20 (int padding)
+		{
 			if (polyCall != null) {
 				polyCall.setTopBannerForAndroid (padding);
 			}
@@ -360,7 +376,8 @@ namespace Polymer
      	* @param callback
      	* Version 3003 and above support this method
      	*/
-		public static void notifyAccessPrivacyInfoStatus(Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback) {
+		public static void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback)
+		{
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
@@ -372,7 +389,8 @@ namespace Polymer
      	* @param enumValue
      	* Version 3003 and above support this method
      	*/
-		public static void updateAccessPrivacyInfoStatus(UPConstant.UPAccessPrivacyInfoStatusEnum enumValue) {
+		public static void updateAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum enumValue)
+		{
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
@@ -384,7 +402,8 @@ namespace Polymer
      	* return UPConstant.UPAccessPrivacyInfoStatusEnum
      	* Version 3003 and above support this method
      	*/
-		public static UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus() {
+		public static UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus ()
+		{
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
@@ -396,7 +415,8 @@ namespace Polymer
      	* 异步回调
      	* Version 3003 and above support this method
      	*/
-		public static void isEuropeanUnionUser(Action<bool, string> callback) {
+		public static void isEuropeanUnionUser (Action<bool, string> callback)
+		{
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
@@ -410,7 +430,8 @@ namespace Polymer
      	* 3007开始废弃此方法，在sdk内部用更优的方案替换
      	* Version 3004 and above support this method
      	*/
-		public static void runCallbackAfterAppFocus(bool enable) {
+		public static void runCallbackAfterAppFocus (bool enable)
+		{
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
@@ -423,12 +444,39 @@ namespace Polymer
 		 * 对于非GP的包，可以传androidid
 		 * Version 3004 and above support this method
 		 */
-		public static void setCustomerIdForAndroid(string customerId) {
+		public static void setCustomerIdForAndroid (string customerId)
+		{
 			if (null == polyCall) {
 				polyCall = new PolyADCall ();
 			}
 			polyCall.setCustomerId (customerId);
 		}
+
+		/*
+         * 判断SDK是否开启Debug log
+         * 返回结果为bool值
+         *
+        */
+		public static bool isLogOpened ()
+		{
+			if (null == polyCall) {
+				polyCall = new PolyADCall ();
+			}
+			return polyCall.isSdkLogOpened ();
+		}
+
+		/*
+         * 设置当前用户是否是13岁以下的儿童
+         *
+        */
+		public static void setIsChild (bool isChild)
+		{
+			if (null == polyCall) {
+				polyCall = new PolyADCall ();
+			}
+			polyCall.setIsChild (isChild);
+		}
+
 	}
 }
 
