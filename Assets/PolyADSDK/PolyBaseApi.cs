@@ -5,10 +5,10 @@ namespace Polymer
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3008.1";
+		private readonly static string Version_Of_Ios_In_Plugin = "3008.2";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3008.1";
-		private readonly static string Version_Of_Plugin = "3008.1";
+		private readonly static string Version_Of_Android_In_Plugin = "3008.2";
+		private readonly static string Version_Of_Plugin = "3008.2";
 	
 
 		private static bool _sInited;
