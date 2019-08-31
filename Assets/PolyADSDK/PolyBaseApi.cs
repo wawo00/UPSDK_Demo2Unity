@@ -7,8 +7,8 @@ namespace Polymer
 		// 插件版本号
 		private readonly static string Version_Of_Ios_In_Plugin = "3008.2";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3008.2";
-		private readonly static string Version_Of_Plugin = "3008.2";
+		private readonly static string Version_Of_Android_In_Plugin = "3008.3";
+		private readonly static string Version_Of_Plugin = "3008.3";
 	
 
 		private static bool _sInited;
@@ -477,6 +477,17 @@ namespace Polymer
 			polyCall.setIsChild (isChild);
 		}
 
+		/*
+         * 设置当前用户的生日
+         *
+        */
+		public static void setBirthday (int year, int month)
+		{
+			if (null == polyCall) {
+				polyCall = new PolyADCall ();
+			}
+			polyCall.setBirthday (year, month);
+		}
 	}
 }
 

@@ -159,6 +159,7 @@ namespace Polymer
 
 			private readonly static string JavaClassStaticMethod_IsLogOpened = "isLogOpened";
 			private readonly static string JavaClassStaticMethod_SetIsChild = "setIsChild";
+			private readonly static string JavaClassStaticMethod_SetBirthday = "setBirthday";
 		
 #else
 		// "do nothing";
@@ -898,6 +899,16 @@ namespace Polymer
 			if (jc != null) 
 			{
 				jc.CallStatic (JavaClassStaticMethod_SetIsChild, isChild);
+			}
+			#endif
+		}
+
+		public void setBirthday (int year, int month)
+		{
+			#if UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+			jc.CallStatic (JavaClassStaticMethod_SetBirthday, year, month);
 			}
 			#endif
 		}

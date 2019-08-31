@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using System.IO;
-using UnityEditor.XCodeEditor;
+using UnityEditor.UPXCodeEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -19,7 +19,7 @@ public static class PolyPostBuild
 if (target2 == BuildTarget.iPhone)
 #endif
 		{
-			UnityEditor.XCodeEditor.XCProject proj = new UnityEditor.XCodeEditor.XCProject(path);
+			UnityEditor.UPXCodeEditor.XCProject proj = new UnityEditor.UPXCodeEditor.XCProject(path);
 
 			string[] projmods = System.IO.Directory.GetFiles(
 				System.IO.Path.Combine(System.IO.Path.Combine(Application.dataPath, "PolyADSDK"), "Plugins"), "PolyADSDK.projmods", System.IO.SearchOption.AllDirectories);
@@ -68,11 +68,11 @@ if (target2 == BuildTarget.iPhone)
 				return;
 			}
 
-			Dictionary<string, object> dict = (Dictionary<string, object>)PlistCS.Plist.readPlist(infofilePath);
+			Dictionary<string, object> dict = (Dictionary<string, object>)UPPlistCS.Plist.readPlist(infofilePath);
 			string dkey = "AppLovinSdkKey";
 			if (!dict.ContainsKey (dkey)) {
 				dict.Add (dkey, "e-4s7LbXsuJb2oXtoW10amMsJ9scHJhwHmmP6LxzEEZH159qbBqBxA2FKvsbCXWUIHuPdqMs2w840HucShoOtq");
-				PlistCS.Plist.writeXml (dict, infofilePath);
+				UPPlistCS.Plist.writeXml (dict, infofilePath);
 				Debug.Log ("==> add " + dkey+ " :" + dict [dkey]);
 			} else {
 				Debug.Log ("==> exist " + dkey+ " :" + dict[dkey]);
