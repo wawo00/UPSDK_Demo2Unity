@@ -5,10 +5,10 @@ namespace Polymer
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3008.2";
+		private readonly static string Version_Of_Ios_In_Plugin = "3008.6";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3008.3";
-		private readonly static string Version_Of_Plugin = "3008.3";
+		private readonly static string Version_Of_Android_In_Plugin = "3008.6";
+		private readonly static string Version_Of_Plugin = "3008.6";
 	
 
 		private static bool _sInited;
@@ -467,6 +467,7 @@ namespace Polymer
 
 		/*
          * 设置当前用户是否是13岁以下的儿童
+         * Version 3008.1 and above support this method
          *
         */
 		public static void setIsChild (bool isChild)
@@ -478,7 +479,8 @@ namespace Polymer
 		}
 
 		/*
-         * 设置当前用户的生日
+         * 设置用户出生年月
+         * Version 3008.3 and above support this method
          *
         */
 		public static void setBirthday (int year, int month)
@@ -487,6 +489,12 @@ namespace Polymer
 				polyCall = new PolyADCall ();
 			}
 			polyCall.setBirthday (year, month);
+		}
+
+		public static void autoOneKeyInspect () {
+			if (null != polyCall) {
+				polyCall.AutoOneKeyInspect ();
+			}
 		}
 	}
 }

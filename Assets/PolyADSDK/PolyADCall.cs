@@ -109,9 +109,13 @@ namespace Polymer
             [DllImport("__Internal")]
             private static extern bool isLogOpened();
 
+			[DllImport("__Internal")]
+			private static extern void TellDoctorSomeThing(string action, string adid, string msg);
 
+			[DllImport("__Internal")]
+			private static extern void autoOneKeyInspectByIos();
 		
-#elif UNITY_ANDROID && !UNITY_EDITOR
+		#elif UNITY_ANDROID && !UNITY_EDITOR
 			private static AndroidJavaClass jc = null;
 			private readonly static string JavaClassName = "com.up.ads.unity.PolyProxy";
 			private readonly static string JavaClassStaticMethod_IniSDKByZone = "iniSDKByZone";
@@ -160,10 +164,16 @@ namespace Polymer
 			private readonly static string JavaClassStaticMethod_IsLogOpened = "isLogOpened";
 			private readonly static string JavaClassStaticMethod_SetIsChild = "setIsChild";
 			private readonly static string JavaClassStaticMethod_SetBirthday = "setBirthday";
+
+			private readonly static string JavaClassStaticMethod_TellToDoctor = "tellToDoctor";
+
+			private readonly static string JavaClassStaticMethod_AutoOneKeyInspect = "autoOneKeyInspect";
 		
-#else
-		// "do nothing";
+		#else
+			// "do nothing";
 		#endif
+
+		private bool doctorWorking;
 
 		public string getPlatformName ()
 		{
@@ -225,6 +235,7 @@ namespace Polymer
 		public PolyADCall ()
 		{
 			PolyADSDKGameObject.getInstance ().setPolyADCall (this);
+			doctorWorking = false;
 			#if UNITY_IOS && !UNITY_EDITOR
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc == null) {
@@ -234,12 +245,48 @@ namespace Polymer
 			#endif
 		}
 
+		public void AutoOneKeyInspect () {
+			
+
+			#if UNITY_IOS && !UNITY_EDITOR
+				autoOneKeyInspectByIos();
+			#elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+				jc.CallStatic (JavaClassStaticMethod_AutoOneKeyInspect);
+			}
+			#endif
+		}
+
+
+		public void DoctorOnDuty () {
+			doctorWorking = true;
+		}
+
+		public void DoctorOffDuty () {
+			doctorWorking = false;
+		}
+
+		public bool IsDoctorWorking() {
+			return doctorWorking;
+		}
+
+		public void TellToDoctor(string action, string adid, string message) {
+			#if UNITY_IOS && !UNITY_EDITOR
+				TellDoctorSomeThing(action, adid, message);
+			#elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) 
+			{
+				jc.CallStatic (JavaClassStaticMethod_TellToDoctor, action, adid, message);
+			}
+			#endif
+		}
 
 		public bool IsReportOnlineEnable ()
 		{
 			
 			#if UNITY_IOS && !UNITY_EDITOR
-			return IsIosReportOnlineEnable();
+				return IsIosReportOnlineEnable();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) 
 			{
@@ -635,8 +682,7 @@ namespace Polymer
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) 
 			{
-			jc.CallStatic (JavaClassStaticMethod_SetRewardVideoLoadCallback);
-			Debug.Log ("callRewardVideoLoadCallback function 运行完成:" );
+				jc.CallStatic (JavaClassStaticMethod_SetRewardVideoLoadCallback);
 			}
 			#endif
 		}
@@ -648,13 +694,11 @@ namespace Polymer
 				return;
 			}
 			#if UNITY_IOS && !UNITY_EDITOR
-			setInterstitialLoadCallbackAt(cpPlaceId);
-			Debug.Log ("callInterstitialCallbackAt function cpPlaceId:" + cpPlaceId);
+				setInterstitialLoadCallbackAt(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) 
 			{
-			jc.CallStatic (JavaClassStaticMethod_SetInterstitialCallbackAt, cpPlaceId);
-			//Debug.Log ("callInterstitialCallbackAt function cpPlaceId:" + cpPlaceId);
+				jc.CallStatic (JavaClassStaticMethod_SetInterstitialCallbackAt, cpPlaceId);
 			}
 			#endif
 		}

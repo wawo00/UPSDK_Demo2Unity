@@ -7,6 +7,36 @@ namespace Polymer {
 
 	public class PolyADSDKGameObject : MonoBehaviour {
 
+
+		private readonly static string Action_Doctor_ON_DUTY   = "auto_ad_checking_doctor_on_duty";
+		private readonly static string Action_Doctor_OFF_DUTY   = "auto_ad_checking_doctor_off_duty";
+
+
+		private readonly static string Action_Doctor_Ad_IL_LoadOk_Reply   = "auto_ad_il_load_ok_reply";
+		private readonly static string Action_Doctor_Ad_IL_LoadFail_Reply = "auto_ad_il_load_fail_reply";
+		private readonly static string Action_Doctor_Ad_IL_WillShow_Reply  = "auto_ad_il_willshow_reply";
+		private readonly static string Action_Doctor_Ad_IL_DidShow_Reply  = "auto_ad_il_didshow_reply";
+		private readonly static string Action_Doctor_Ad_IL_DidClick_Reply = "auto_ad_il_didclick_reply";
+		private readonly static string Action_Doctor_Ad_IL_DidClose_Reply = "auto_ad_il_didclose_reply";
+
+		private readonly static string Action_Doctor_Ad_RD_LoadOk_Reply   = "auto_ad_rd_load_ok_reply";
+		private readonly static string Action_Doctor_Ad_RD_LoadFail_Reply = "auto_ad_rd_load_fail_reply";
+		private readonly static string Action_Doctor_Ad_RD_WillShow_Reply = "auto_ad_rd_willshow_reply";
+		private readonly static string Action_Doctor_Ad_RD_DidShow_Reply  = "auto_ad_rd_didshow_reply";
+		private readonly static string Action_Doctor_Ad_RD_DidClick_Reply = "auto_ad_rd_didclick_reply";
+		private readonly static string Action_Doctor_Ad_RD_DidClose_Reply = "auto_ad_rd_didclose_reply";
+		private readonly static string Action_Doctor_Ad_RD_Given_Reply    = "auto_ad_rd_reward_given_reply";
+		private readonly static string Action_Doctor_Ad_RD_Cancel_Reply   = "auto_ad_rd_reward_cancel_reply";
+
+		private readonly static string Function_Doctor_IL_Show_AdId    = "auto_sample_ad_il_show_placeid";
+		private readonly static string Function_Doctor_RD_Show_AdId    = "auto_sample_ad_rd_show_placeid";
+
+		private readonly static string Function_Doctor_IL_Show_Request    = "invoke_plugin_ad_il_show_request";
+		private readonly static string Function_Doctor_RD_Show_Request    = "invoke_plugin_ad_rd_show_request";
+
+		private readonly static string Function_Doctor_IL_Load_Request    = "invoke_plugin_ad_il_load_request";
+		private readonly static string Function_Doctor_RD_Load_Request    = "invoke_plugin_ad_rd_load_request";
+
 		private readonly static string Function_Reward_WillOpen    = "reward_willopen";
 		private readonly static string Function_Reward_DidOpen    = "reward_didopen";
 		private readonly static string Function_Reward_DidClick   = "reward_didclick";
@@ -14,7 +44,7 @@ namespace Polymer {
 		private readonly static string Function_Reward_DidGivien  = "reward_didgiven";
 		private readonly static string Function_Reward_DidAbandon = "reward_didabandon";
 
-		private readonly static string Function_Interstitial_Willshow  = "interstitial_willshow";
+		private readonly static string Function_Interstitial_Willshow = "interstitial_willshow";
 		private readonly static string Function_Interstitial_Didshow  = "interstitial_didshow";
 		private readonly static string Function_Interstitial_Didclose = "interstitial_didclose";
 		private readonly static string Function_Interstitial_Didclick = "interstitial_didclick";
@@ -172,6 +202,34 @@ namespace Polymer {
 			putLoadCallback (actionIntsSuccessMaps, cpPlaceId, call);
 		}
 
+		private void doctorForILLoadFail(string placeId, string msg)
+		{
+			Debug.Log ("===> TellToDoctor il load fail at: " + placeId);
+			adCall.TellToDoctor (Action_Doctor_Ad_IL_LoadFail_Reply, placeId, msg);
+		}
+
+		private void doctorForILLoadSuccess(string placeId, string msg)
+		{
+			Debug.Log ("===> TellToDoctor il load ok at: " + placeId);
+			adCall.TellToDoctor (Action_Doctor_Ad_IL_LoadOk_Reply, placeId, msg);
+		}
+
+		private void doctorForRDLoadFail(string placeId, string msg)
+		{
+			Debug.Log ("===> TellToDoctor rd load fail at: " + placeId);
+			adCall.TellToDoctor (Action_Doctor_Ad_RD_LoadFail_Reply, placeId, msg);
+		}
+
+		private void replyToDoctor(string action, string adid, string msg) {
+			adCall.TellToDoctor (action, adid, msg);
+		}
+
+		private void doctorForRDLoadSuccess(string placeId, string msg)
+		{
+			Debug.Log ("===> TellToDoctor rd load ok at: " + placeId);
+			adCall.TellToDoctor (Action_Doctor_Ad_RD_LoadOk_Reply, placeId, msg);
+		}
+
 		public void onJavaCallback(string message) {
 			// Debug.Log ("===> onJavaCallback enableCallbackAfterAppFocus: " + enableCallbackAfterAppFocus +",canObserverAppFocusCall: " + canObserverAppFocusCall);
 			if (false && enableCallbackAfterAppFocus) {
@@ -241,14 +299,53 @@ namespace Polymer {
 				bool isReportOnlineDebug = false;
 				if (adCall != null) {
 					isReportOnlineDebug = adCall.IsReportOnlineEnable ();
+					Debug.Log ("===> function:UnityPlugin AA reporting:" + isReportOnlineDebug + ",doctorWorking: " + adCall.IsDoctorWorking());
 					if (isReportOnlineDebug) {
-						adCall.reportPluginInvokeMethodCall ("UnityPlugin doCallback, function: " + function + ",cpadsid: " + placeId);
+						adCall.reportPluginInvokeMethodCall ("UnityPlugin doCallback, function: " + function + ",cpadsid: " + placeId + ",doctorWorking: " + adCall.IsDoctorWorking());
 					}
 				}
+
+
+				if (function.Equals (Action_Doctor_ON_DUTY)) {
+					if (isReportOnlineDebug) {
+						adCall.DoctorOnDuty ();
+					}
+				} else if (function.Equals (Action_Doctor_OFF_DUTY)) {
+					if (isReportOnlineDebug) {
+						adCall.DoctorOffDuty ();
+					}
+				} else if (function.Equals (Function_Doctor_IL_Show_Request)) {
+					if (isReportOnlineDebug) {
+						adCall.showInterstitialAd (Function_Doctor_IL_Show_AdId);
+					}
+				} else if (function.Equals (Function_Doctor_RD_Show_Request)) {
+					if (isReportOnlineDebug) {
+						adCall.showRewardAd (Function_Doctor_RD_Show_AdId);
+					}
+				} else if (function.Equals (Function_Doctor_IL_Load_Request)) {
+					if (isReportOnlineDebug) {
+						UPSDK.setIntersitialLoadCallback (Function_Doctor_IL_Show_AdId,
+							new System.Action<string, string>(doctorForILLoadSuccess),
+							new System.Action<string, string>(doctorForILLoadFail)
+						);
+					}
+				} else if (function.Equals (Function_Doctor_RD_Load_Request)) {
+					if (isReportOnlineDebug) {
+						UPSDK.setRewardVideoLoadCallback (
+							new System.Action<string, string>(doctorForRDLoadSuccess),
+							new System.Action<string, string>(doctorForRDLoadFail)
+						);
+					}
+				}
+
 				//reward callback
-				if (function.Equals (Function_Reward_WillOpen)) {
+				else if (function.Equals (Function_Reward_WillOpen)) {
 					string fmsg = "";
-					if (UPSDK.UPRewardWillOpenCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						replyToDoctor (Action_Doctor_Ad_RD_WillShow_Reply, Function_Doctor_RD_Show_AdId, "tell the willopen event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardWillOpenCallback != null) {
 						Debug.Log ("===> function UPRewardWillOpenCallback(): ");
 						UPSDK.UPRewardWillOpenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.UPRewardWillOpenCallback()";
@@ -261,11 +358,15 @@ namespace Polymer {
 						fmsg = "can't run RewardWillOpenCallback(), no delegate object.";
 					}
 					if (isReportOnlineDebug) {
-						adCall.reportAdVideoShowDid(fmsg);
 					}
 				} else if (function.Equals (Function_Reward_DidOpen)) {
 					string fmsg = "";
-					if (UPSDK.UPRewardDidOpenCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportAdVideoShowDid("unity plugin got the didopen event. ");
+						replyToDoctor (Action_Doctor_Ad_RD_DidShow_Reply, Function_Doctor_RD_Show_AdId, "tell the didopen event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardDidOpenCallback != null) {
 						Debug.Log ("===> function UPRewardDidOpenCallback(): ");
 						UPSDK.UPRewardDidOpenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidOpenCallback()";
@@ -282,7 +383,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Reward_DidClick)) {
 					string fmsg = "can't run RewardDidClickCallback(), no delegate object.";
-					if (UPSDK.UPRewardDidClickCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportAdVideoClick("unity plugin got the didclick event. ");
+						replyToDoctor (Action_Doctor_Ad_RD_DidClick_Reply, Function_Doctor_RD_Show_AdId, "tell the didclick event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardDidClickCallback != null) {
 						UPSDK.UPRewardDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidClickCallback()";
 					}
@@ -295,7 +401,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Reward_DidClose)) {
 					string fmsg = "can't run RewardDidCloseCallback(), no delegate object.";
-					if (UPSDK.UPRewardDidCloseCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportAdVideoClose("unity plugin got the didclose event. ");
+						replyToDoctor (Action_Doctor_Ad_RD_DidClose_Reply, Function_Doctor_RD_Show_AdId, "tell the didclose event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardDidCloseCallback != null) {
 						UPSDK.UPRewardDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidCloseCallback()";
 					}
@@ -308,7 +419,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Reward_DidGivien)) {
 					string fmsg = "can't run RewardDidGivenCallback(), no delegate object.";
-					if (UPSDK.UPRewardDidGivenCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportAdVideoRewardGiven("unity plugin got the givenreward event. ");
+						replyToDoctor (Action_Doctor_Ad_RD_Given_Reply, Function_Doctor_RD_Show_AdId, "tell the givenreward event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardDidGivenCallback != null) {
 						UPSDK.UPRewardDidGivenCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidGivenCallback()";
 					}
@@ -321,7 +437,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Reward_DidAbandon)) {
 					string fmsg = "can't run RewardDidAbandonCallback(), no delegate object.";
-					if (UPSDK.UPRewardDidAbandonCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportAdVideoRewardCancel("unity plugin got the noreward event. ");
+						replyToDoctor (Action_Doctor_Ad_RD_Cancel_Reply, Function_Doctor_RD_Show_AdId, "tell the noreward event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPRewardDidAbandonCallback != null) {
 						UPSDK.UPRewardDidAbandonCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.RewardDidAbandonCallback()";
 					}
@@ -336,7 +457,11 @@ namespace Polymer {
 				//Interstitial callback
 				else if (function.Equals (Function_Interstitial_Willshow)) {
 					string fmsg = "can't run InterstitialWillShowCallback(), no delegate object.";
-					if (UPSDK.UPInterstitialWillShowCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						replyToDoctor (Action_Doctor_Ad_IL_WillShow_Reply, Function_Doctor_IL_Show_AdId, "tell the willshow event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPInterstitialWillShowCallback != null) {
 						UPSDK.UPInterstitialWillShowCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.UPInterstitialWillShowCallback()";
 					}
@@ -345,12 +470,17 @@ namespace Polymer {
 						fmsg = "UnityPlugin Run PolyADSDK.OldInterstitialWillShowCallback()";
 					}
 					if (isReportOnlineDebug) {
-						adCall.reportILDidShow(placeId, fmsg);
+						
 					}
 				}
 				else if (function.Equals (Function_Interstitial_Didshow)) {
 					string fmsg = "can't run InterstitialDidShowCallback(), no delegate object.";
-					if (UPSDK.UPInterstitialDidShowCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportILDidShow(placeId, "unity plugin IL got the didshow event. ");
+						replyToDoctor (Action_Doctor_Ad_IL_DidShow_Reply, Function_Doctor_IL_Show_AdId, "tell the didshow event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPInterstitialDidShowCallback != null) {
 						UPSDK.UPInterstitialDidShowCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidShowCallback()";
 					}
@@ -363,7 +493,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Interstitial_Didclose)) {
 					string fmsg = "can't run InterstitialDidCloseCallback(), no delegate object.";
-					if (UPSDK.UPInterstitialDidCloseCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportILClose(placeId, "unity plugin IL got the didclose event. ");
+						replyToDoctor (Action_Doctor_Ad_IL_DidClose_Reply, Function_Doctor_IL_Show_AdId, "tell the didclose event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPInterstitialDidCloseCallback != null) {
 						UPSDK.UPInterstitialDidCloseCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidCloseCallback()";
 					}
@@ -376,7 +511,12 @@ namespace Polymer {
 					}
 				} else if (function.Equals (Function_Interstitial_Didclick)) {
 					string fmsg = "can't run InterstitialDidClickCallback(), no delegate object.";
-					if (UPSDK.UPInterstitialDidClickCallback != null) {
+					if (isReportOnlineDebug && adCall.IsDoctorWorking()) {
+						adCall.reportILClick(placeId, "unity plugin IL got the didclick event. ");
+						replyToDoctor (Action_Doctor_Ad_IL_DidClick_Reply, Function_Doctor_IL_Show_AdId, "tell the didclick event to doctor.");
+						return;
+					}
+					else if (UPSDK.UPInterstitialDidClickCallback != null) {
 						UPSDK.UPInterstitialDidClickCallback (placeId, msg);
 						fmsg = "UnityPlugin Run UPSDK.InterstitialDidClickCallback()";
 					}

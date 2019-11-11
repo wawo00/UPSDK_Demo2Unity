@@ -111,6 +111,11 @@ public class TestAndroidCall : MonoBehaviour {
 		string r = UPSDK.getAbtConfig ("freeCoins");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
+
+	public void onBtnAutoInspect_Click()
+	{
+		UPSDK.autoOneKeyInspect ();
+	}
 	 
 	public void onBtnReadAssets_Click(){
 		string filePath = Application.streamingAssetsPath + "/avidly_android/js_ad_sdk_native.js";
@@ -277,7 +282,6 @@ public class TestAndroidCall : MonoBehaviour {
 	private void actionForInterstitialDidClose(string placeId, string msg) {
 		Debug.Log ("===> actionForInterstitialDidClose Callback at: " + placeId);
 	}
-
 
 	//获取所有路径
 	public void getPathWithSetConfigurationFile(){
