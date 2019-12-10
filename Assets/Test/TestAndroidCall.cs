@@ -74,7 +74,7 @@ public class TestAndroidCall : MonoBehaviour {
 	}
 
 	public void onBtn_ClickForRewardLoadCallback() {
-		UPSDK.setRewardVideoLoadCallback ( 
+        UPSDK.setRewardVideoLoadCallback ( 
 			new System.Action<string, string>(actionForRewardLoadSuccess),
 			new System.Action<string, string>(actionForRewardLoadFail) 
 		);
@@ -202,7 +202,7 @@ public class TestAndroidCall : MonoBehaviour {
 	private void actionForRewardLoadFail(string placeId, string msg)
 	{
 		Debug.Log ("===> actionForRewardLoadFail Callback at: " + placeId);
-	}
+    }
 
 	private void actionForRewardLoadSuccess(string placeId, string msg)
 	{
