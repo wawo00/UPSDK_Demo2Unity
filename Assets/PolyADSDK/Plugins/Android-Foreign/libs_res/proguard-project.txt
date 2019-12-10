@@ -1,28 +1,26 @@
 # 不做预校验，preverify是proguard的四个步骤之一，Android不需要preverify，去掉这一步能够加快混淆速度。
 -dontpreverify
-
-# avidly
--keep class com.avidly.ads.** {*;}
+-ignorewarnings
 -keep class com.up.ads.** {*;}
 -keep interface com.up.ads.** {*;}
--keep class com.avidly.channel.** { *; }
 -keep class com.up.channel.** { *; }
+
+-keep class com.sm.up.decode.** {*;}
+-keep interface com.sm.up.decode.** {*;}
 -keep class com.sm.avid.decode.** {*;}
--keep class com.avidly.playablead.ext.** {*;}
--keep interface com.avidly.ads.** {*;}
 -keep interface com.sm.avid.decode.** {*;}
--keep class com.hola.sdk.* {*;}
+
 -keep class com.statistics.channel.* {*;}
 -keep class com.aly.analysis.sdk.api.* {*;}
+
 -keepclasseswithmembernames class * {
     native <methods>;
 }
--dontwarn com.avidly.**
+
 -dontwarn com.up.**
 -keep class com.statistics.channel.* {*;}
 -keep class com.google.ads.mediation.** {*;}
 -dontwarn com.google.ads.mediation.**
-# avidly end
 
 # support
 -keep public class * extends android.support.v4.app.Fragment
@@ -30,6 +28,12 @@
 -keep class com.google.gson.** {*;}
 -dontwarn android.support.**
 # support end
+
+#androidx start
+-dontwarn androidx.**
+-keep class androidx.** { *; }
+-keep interface androidx.** { *; }
+#androidx end
 
 # facebook
 -keep class com.facebook.ads.InterstitialAd {*;}
@@ -171,3 +175,44 @@
 # amazon
 -keep class com.amazon.device.ads.** { *; }
 # amazon end
+
+#eventbus start
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+
+#eventbus end
+
+#google gms identifier start
+-keep class com.google.android.gms.ads.identifier.** { *; }
+#google gms identifier end
+
+
+#androidx start
+-dontwarn androidx.**
+-keep class androidx.** { *; }
+-keep interface androidx.** { *; }
+#androidx end
+
+#chartboost_new start
+-keep class com.tapjoy.** { *; }
+-dontwarn com.tapjoy.**
+#eventbus start
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+#eventbus end
+#chartboost_new end
+

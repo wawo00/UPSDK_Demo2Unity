@@ -71,15 +71,6 @@ namespace Polymer {
 		private readonly static string Function_User_Is_European_User      = "user_is_european_union";
 		private readonly static string Function_User_IsNot_European_User   = "user_not_is_european_union";
 
-
-		#if UNITY_ANDROID && !UNITY_EDITOR
-		private readonly static string Function_ExitAd_DidShow      = "exitad_didshow";
-		private readonly static string Function_ExitAd_DidClick     = "exitad_didclick";
-		private readonly static string Function_ExitAd_DidClickMore = "exitad_didclickmore";
-		private readonly static string Function_ExitAd_DidExit      = "exitad_onexit";
-		private readonly static string Function_ExitAd_DidCancel    = "exitad_oncancel";
-		#endif
-
 		private static PolyADSDKGameObject instance = null;
 		public static readonly string GameObject_Callback_Name = "PolyAdSDK_Callback_Object";
 		public static readonly string Java_Callback_Function = "onJavaCallback";
@@ -128,8 +119,6 @@ namespace Polymer {
 			PolyADSDK.OnApplicationFocus (hasFocus);
 			Debug.Log ("===> Game OnApplicationFocus Call, android hasFocus: " + hasFocus);
 			#endif
-
-
 
 		}
 
@@ -204,19 +193,19 @@ namespace Polymer {
 
 		private void doctorForILLoadFail(string placeId, string msg)
 		{
-			Debug.Log ("===> TellToDoctor il load fail at: " + placeId);
+			//Debug.Log ("===> TellToDoctor il load fail at: " + placeId);
 			adCall.TellToDoctor (Action_Doctor_Ad_IL_LoadFail_Reply, placeId, msg);
 		}
 
 		private void doctorForILLoadSuccess(string placeId, string msg)
 		{
-			Debug.Log ("===> TellToDoctor il load ok at: " + placeId);
+			//Debug.Log ("===> TellToDoctor il load ok at: " + placeId);
 			adCall.TellToDoctor (Action_Doctor_Ad_IL_LoadOk_Reply, placeId, msg);
 		}
 
 		private void doctorForRDLoadFail(string placeId, string msg)
 		{
-			Debug.Log ("===> TellToDoctor rd load fail at: " + placeId);
+			//Debug.Log ("===> TellToDoctor rd load fail at: " + placeId);
 			adCall.TellToDoctor (Action_Doctor_Ad_RD_LoadFail_Reply, placeId, msg);
 		}
 
@@ -226,7 +215,7 @@ namespace Polymer {
 
 		private void doctorForRDLoadSuccess(string placeId, string msg)
 		{
-			Debug.Log ("===> TellToDoctor rd load ok at: " + placeId);
+			//Debug.Log ("===> TellToDoctor rd load ok at: " + placeId);
 			adCall.TellToDoctor (Action_Doctor_Ad_RD_LoadOk_Reply, placeId, msg);
 		}
 
@@ -572,49 +561,6 @@ namespace Polymer {
 						UPSDK.UPIconDidClickCallback (placeId, msg);
 					}
 				}
-				// exitad callback 
-				#if UNITY_ANDROID && !UNITY_EDITOR
-				else if (function.Equals (Function_ExitAd_DidShow)) {
-					if (UPSDK.UPExitAdDidShowCallback != null) {
-						UPSDK.UPExitAdDidShowCallback (msg);
-					}
-					else if (PolyADSDK.OldExitAdDidShowCallback != null) {
-						PolyADSDK.OldExitAdDidShowCallback (msg);
-					}
-				}
-				else if (function.Equals (Function_ExitAd_DidCancel)) {
-					if (UPSDK.UPExitAdOnCancelCallback != null) {
-						UPSDK.UPExitAdOnCancelCallback (msg);
-					}
-					else if (PolyADSDK.OldExitAdOnCancelCallback!= null) {
-						PolyADSDK.OldExitAdOnCancelCallback (msg);
-					}
-				}
-				else if (function.Equals (Function_ExitAd_DidExit)) {
-					if (UPSDK.UPExitAdOnExitCallback != null) {
-						UPSDK.UPExitAdOnExitCallback (msg);
-					}
-					else if (PolyADSDK.OldExitAdOnExitCallback!= null) {
-						PolyADSDK.OldExitAdOnExitCallback (msg);
-					}
-				}
-				else if (function.Equals (Function_ExitAd_DidClick)) {
-					if (UPSDK.UPExitAdDidClickCallback != null) {
-						UPSDK.UPExitAdDidClickCallback (msg);
-					}
-					else if (PolyADSDK.OldExitAdDidClickCallback!= null) {
-						PolyADSDK.OldExitAdDidClickCallback (msg);
-					}
-				}
-				else if (function.Equals (Function_ExitAd_DidClickMore)) {
-					if (UPSDK.UPExitAdDidClickMoreCallback != null) {
-						UPSDK.UPExitAdDidClickMoreCallback (msg);
-					}
-					else if (PolyADSDK.OldExitAdDidClickMoreCallback!= null) {
-						PolyADSDK.OldExitAdDidClickMoreCallback (msg);
-					}
-				}
-				#endif
 				// check European User Callback
 				else if (function.Equals (Function_User_Is_European_User)) {
 					if (checkEuropeanUserCallback != null) {

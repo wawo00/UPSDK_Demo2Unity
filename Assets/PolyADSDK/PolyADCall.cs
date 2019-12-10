@@ -14,7 +14,7 @@ namespace Polymer
 
 		#if UNITY_IOS && !UNITY_EDITOR
 			[DllImport("__Internal")]
-			private static extern string initIosSDKByZone(string gameName, string funName, int zone);
+			private static extern string initIosSDK(string gameName, string funName, string appKey, int zone);
 			[DllImport("__Internal")]
 			private static extern void showInterstitial(string cpPlaceId);
 			[DllImport("__Internal")]
@@ -114,11 +114,17 @@ namespace Polymer
 
 			[DllImport("__Internal")]
 			private static extern void autoOneKeyInspectByIos();
+
+			[DllImport("__Internal")]
+			private static extern void adjustIDByUpIos(string msg);
+
+			[DllImport("__Internal")]
+			private static extern void appsflyerUIDByUpIos(string msg);
 		
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 			private static AndroidJavaClass jc = null;
 			private readonly static string JavaClassName = "com.up.ads.unity.PolyProxy";
-			private readonly static string JavaClassStaticMethod_IniSDKByZone = "iniSDKByZone";
+			private readonly static string JavaClassStaticMethod_InitSDK = "initSDK";
 			private readonly static string JavaClassStaticMethod_ShowTopBanner = "showTopBanner";
 			private readonly static string JavaClassStaticMethod_ShowBottomBanner = "showBottomBanner";
 			private readonly static string JavaClassStaticMethod_RemoveBanner = "removeBanner";
@@ -163,11 +169,17 @@ namespace Polymer
 
 			private readonly static string JavaClassStaticMethod_IsLogOpened = "isLogOpened";
 			private readonly static string JavaClassStaticMethod_SetIsChild = "setIsChild";
+	        private readonly static string JavaClassStaticMethod_GetIsChild = "getIsChild";
 			private readonly static string JavaClassStaticMethod_SetBirthday = "setBirthday";
 
 			private readonly static string JavaClassStaticMethod_TellToDoctor = "tellToDoctor";
 
 			private readonly static string JavaClassStaticMethod_AutoOneKeyInspect = "autoOneKeyInspect";
+
+			private readonly static string JavaClassStaticMethod_SetAppsflyerUID = "setAppsflyerUID";
+
+			private readonly static string JavaClassStaticMethod_SetAdjustID = "setAdjustID";
+
 		
 		#else
 			// "do nothing";
@@ -415,16 +427,28 @@ namespace Polymer
 		}
 
 		// Use this for initialization
-		public string initSDK (int azone)
+		public string initSDK (string androidAppKey, string iosAppKey, int iosZone)
 		{
 
-
-
 			#if UNITY_IOS && !UNITY_EDITOR
-            Debug.Log ("===> init ios call:" + PolyADSDKGameObject.GameObject_Callback_Name);
-            Debug.Log ("===> init ios fun:" + PolyADSDKGameObject.Java_Callback_Function);
-            Debug.Log ("===> init ios azone:" + azone);
-				string result = initIosSDKByZone(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function, azone);
+				if (iosAppKey == null || iosAppKey.Equals("")) {
+					Debug.Log ("===> failed to initSDK, iosAppKey can't be null or empty.");
+					return "failed to initSDK, iosAppKey can't be null or empty.";
+				}
+
+				if (iosZone < 0 || iosZone > 2) {
+					Debug.Log ("===> warning, iosZone is wrong value: " + iosZone + ", will be setted to SDKZONE_FOREIGN");
+					iosZone = UPConstant.SDKZONE_FOREIGN;
+				}
+
+            	//Debug.Log ("===> init ios call:" + PolyADSDKGameObject.GameObject_Callback_Name);
+            	//Debug.Log ("===> init ios fun:" + PolyADSDKGameObject.Java_Callback_Function);
+            	//Debug.Log ("===> init ios iosZone:" + iosZone);
+				string result = initIosSDK(PolyADSDKGameObject.GameObject_Callback_Name,
+											PolyADSDKGameObject.Java_Callback_Function,
+											iosAppKey,
+											iosZone);
+
 				if (UPSDK.UPSDKInitFinishedCallback != null) {
 					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
 				}
@@ -434,37 +458,39 @@ namespace Polymer
 				return result;
 
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc == null) {
-				//Debug.Log (JavaClassName);
-				jc = new AndroidJavaClass (JavaClassName);
-			}
-			string resule = jc.CallStatic<string> (JavaClassStaticMethod_IniSDKByZone, 
+				//Debug.Log ("===> init android call:" + PolyADSDKGameObject.GameObject_Callback_Name);
+            	//Debug.Log ("===> init android fun:" + PolyADSDKGameObject.Java_Callback_Function);
+            	if (androidAppKey == null || androidAppKey.Equals("")) {
+					Debug.Log ("===> failed to initSDK, androidAppKey can't be null or empty.");
+					return "failed to initSDK, androidAppKey can't be null or empty.";
+            	}
+            	//Debug.Log ("===> init android androidAppKey:" + androidAppKey);
+				if (jc == null) {
+					//Debug.Log (JavaClassName);
+					jc = new AndroidJavaClass (JavaClassName);
+				}
+				string result = jc.CallStatic<string> (JavaClassStaticMethod_InitSDK, 
 													PolyADSDKGameObject.GameObject_Callback_Name, 
 													PolyADSDKGameObject.Java_Callback_Function,
-													azone);
-			if (UPSDK.UPSDKInitFinishedCallback != null) {
-				UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
-			}
-			else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
-				PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
-			}
-			return resule;
+													androidAppKey);
+				if (UPSDK.UPSDKInitFinishedCallback != null) {
+					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
+				}
+				else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
+					PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
+				}
+				return result;
 
 			#else
-			// "do nothing";
-			if (PolyADSDK.OldSDKInitFinishedCallback != null) {
-				PolyADSDK.OldSDKInitFinishedCallback (false, "UPSDK can't ini unkown platform");
-			}
-			return "initSDK ()";
+				// "do nothing";
+				if (PolyADSDK.OldSDKInitFinishedCallback != null) {
+					PolyADSDK.OldSDKInitFinishedCallback (false, "UPSDK can't Init unkown platform");
+				}
+				return "initSDK ()";
 			#endif
-
-
-
-			//return "initSDK ()";
 		}
 
-		private string stringAryToString (string[] tags)
-		{
+		private string stringAryToString (string[] tags) {
 			if (tags == null || tags.Length == 0) {
 				return "";
 			}
@@ -485,21 +511,18 @@ namespace Polymer
 
 		public void initAbtConfigJson (string gameAccountId, bool completeTask,
 		                              int isPaid, string promotionChannelName, string gender,
-		                              int age, string[] tags)
-		{
+		                              int age, string[] tags) {
 			 
 			#if UNITY_IOS && !UNITY_EDITOR
 				initAbtConfigJsonForIos(gameAccountId, completeTask, isPaid, promotionChannelName, gender, age, stringAryToString(tags));
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_initAbtConfigJson, gameAccountId, completeTask, isPaid, promotionChannelName, gender, age, stringAryToString(tags));
 			}
 			#endif
 		}
 
-		public string getAbtConfig (string cpPlaceId)
-		{
+		public string getAbtConfig (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call getAbtConfig(), the param cpPlaceId can't be null. ");
 				return "";
@@ -507,9 +530,8 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			return getAbtConfigForIos(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			return jc.CallStatic<string> (JavaClassStaticMethod_getAbtConfig, cpPlaceId);
+			if (jc != null) {
+				return jc.CallStatic<string> (JavaClassStaticMethod_getAbtConfig, cpPlaceId);
 			}
 			return "";
 			#else
@@ -517,20 +539,17 @@ namespace Polymer
 			#endif
 		}
 
-		public void setManifestPackageName (string packagename)
-		{
+		public void setManifestPackageName (string packagename) {
 			#if UNITY_IOS && !UNITY_EDITOR
 			 
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_SetManifestPackageName, packagename);
 			}
 			#endif
 		}
 
-		public void setCustomerId (string curstomerId)
-		{
+		public void setCustomerId (string curstomerId) {
 
 			if (curstomerId == null) {
 				Debug.Log ("===> fail to call setCustomerId(), curstomerId can't be null.");
@@ -540,15 +559,13 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			Debug.Log ("===> setCustomerId() is not supported by IOS." );
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_SetCustomerId, curstomerId);
 			}
 			#endif
 		}
 
-		public void removeBanner (string cpPlaceId)
-		{
+		public void removeBanner (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call removeBanner(), the param cpPlaceId can't be null. ");
 				return;
@@ -557,66 +574,56 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 				removeBannerAd(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_RemoveBanner, cpPlaceId);
 			}
 			#endif
 			 
 		}
 
-		public void setRewardVideoLoadFailCallback (Action<string, string> call)
-		{
+		public void setRewardVideoLoadFailCallback (Action<string, string> call) {
 			PolyADSDKGameObject.getInstance ().setRewardVideoLoadFailCallback (call);
 		}
 
-		public void setRewardVideoLoadSuccessCallback (Action<string, string> call)
-		{
+		public void setRewardVideoLoadSuccessCallback (Action<string, string> call) {
 			PolyADSDKGameObject.getInstance ().setRewardVideoLoadSuccessCallback (call);
 		}
 
-		public void addIntsLoadFailCallback (string cpPlaceId, Action<string, string> call)
-		{
+		public void addIntsLoadFailCallback (string cpPlaceId, Action<string, string> call) {
 			PolyADSDKGameObject.getInstance ().addIntsLoadFailCallback (cpPlaceId, call);
 
 		}
 
-		public void addIntsLoadSuccessCallback (string cpPlaceId, Action<string, string> call)
-		{
+		public void addIntsLoadSuccessCallback (string cpPlaceId, Action<string, string> call) {
 			PolyADSDKGameObject.getInstance ().addIntsLoadSuccessCallback (cpPlaceId, call);
 
 		}
 
-		public void isEuropeanUnionUser (Action<bool, string> callback)
-		{
+		public void isEuropeanUnionUser (Action<bool, string> callback) {
 			PolyADSDKGameObject.getInstance ().setCheckEuropeanUserCallback (callback);
 			#if UNITY_IOS && !UNITY_EDITOR
 				checkIsEuropeanUnionUser(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_IsEuropeanUnionUser, PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_IsEuropeanUnionUser, PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			}
 			#endif
 		}
 
-		public void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback)
-		{
+		public void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback) {
 			PolyADSDKGameObject.getInstance ().setAccessPrivacyInformationCallback (callback);
 
 			#if UNITY_IOS && !UNITY_EDITOR
 				requestAuthorizationWithAlert(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_notifyAccessPrivacyInfoStatus, PolyADSDKGameObject.GameObject_Callback_Name, PolyADSDKGameObject.Java_Callback_Function);
 			}
 			#endif
 
 		}
 
-		public void setAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum value)
-		{
+		public void setAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum value) {
 			int result = 0;
 			switch (value) {
 			case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusAccepted:
@@ -638,15 +645,13 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 				updateAccessPrivacyInfoStatus(result);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_updateAccessPrivacyInfoStatus, result);
 			}
 			#endif
 		}
 
-		public UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus ()
-		{
+		public UPConstant.UPAccessPrivacyInfoStatusEnum getAccessPrivacyInfoStatus () {
 
 
 			#if UNITY_IOS && !UNITY_EDITOR
@@ -658,8 +663,7 @@ namespace Polymer
 					return UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusDefined;
 				}
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				int result = jc.CallStatic<int> (JavaClassStaticMethod_getAccessPrivacyInfoStatus);
 				if (result == 1) {
 					return UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusAccepted;
@@ -675,20 +679,17 @@ namespace Polymer
 
 
 
-		public void callRewardVideoLoadCallback ()
-		{
+		public void callRewardVideoLoadCallback () {
 			#if UNITY_IOS && !UNITY_EDITOR
 				setRewardloadCallback();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_SetRewardVideoLoadCallback);
 			}
 			#endif
 		}
 
-		public void callInterstitialCallbackAt (string cpPlaceId)
-		{
+		public void callInterstitialCallbackAt (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call setInterstitialCallbackAt(), the param cpPlaceId can't be null. ");
 				return;
@@ -696,15 +697,13 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 				setInterstitialLoadCallbackAt(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_SetInterstitialCallbackAt, cpPlaceId);
 			}
 			#endif
 		}
 
-		public bool isInterstitialAdReady (string cpPlaceId)
-		{
+		public bool isInterstitialAdReady (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call isInterstitialAdReady(), the param cpPlaceId can't be null. ");
 				return false;
@@ -712,8 +711,7 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 				return isInterstitialReady(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				return jc.CallStatic<bool> (JavaClassStaticMethod_IsInterstitialReady, cpPlaceId);
 			}
 			return false;
@@ -723,13 +721,11 @@ namespace Polymer
 
 		}
 
-		public bool isRewardAdReady ()
-		{
+		public bool isRewardAdReady () {
 			#if UNITY_IOS && !UNITY_EDITOR
 				return isRewardReady();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				return jc.CallStatic<bool> (JavaClassStaticMethod_IsRewardReady);
 			}
 			return false;
@@ -739,8 +735,7 @@ namespace Polymer
 
 		}
 
-		public void showInterstitialAd (string cpPlaceId)
-		{
+		public void showInterstitialAd (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call isInterstitialAdReady(), the param cpPlaceId can't be null. ");
 				return;
@@ -749,22 +744,19 @@ namespace Polymer
 				showInterstitial(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_ShowInterstitial, cpPlaceId);
 			}
 			#endif
 		}
 
-		public void hideBannerAtTop ()
-		{
+		public void hideBannerAtTop () {
 			#if UNITY_IOS && !UNITY_EDITOR
 				hideTopBanner();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_HideTopBanner);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_HideTopBanner);
 			}
 			#endif
 		}
@@ -782,8 +774,7 @@ namespace Polymer
 			#endif
 		}
 
-		public void showRewardAd (string cpCustomId)
-		{
+		public void showRewardAd (string cpCustomId) {
 			if (cpCustomId == null) {
 				Debug.Log ("===> call showRewardAd(), the param cpCustomId be null. ");
 				cpCustomId = "reward_vedio";
@@ -791,15 +782,13 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			showReward(cpCustomId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_ShowRewardVideo, cpCustomId);
 			}
 			#endif
 		}
 
-		public void showBannerAdAtTop (string cpPlaceId)
-		{
+		public void showBannerAdAtTop (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showBannerAdAtTop(), the param cpPlaceId can't be null. ");
 				return;
@@ -807,8 +796,7 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			showBannerTop(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_ShowTopBanner, cpPlaceId);
 			}
 			#endif
@@ -824,8 +812,7 @@ namespace Polymer
 		 * @param rotationAngle: 顺时针旋转角度
 		 * @param cpPlaceId: Icon广告位标识符
 		 */
-		public void showIconAd (double x, double y, double width, double height, double rotationAngle, string cpPlaceId)
-		{
+		public void showIconAd (double x, double y, double width, double height, double rotationAngle, string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showIconAd(), the param cpPlaceId can't be null. ");
 				return;
@@ -833,9 +820,8 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			showIcon(x,y,width,height,rotationAngle,cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_ShowIconAd, x, y, width, height, rotationAngle, cpPlaceId);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_ShowIconAd, x, y, width, height, rotationAngle, cpPlaceId);
 			}
 			#endif
 		}
@@ -844,8 +830,7 @@ namespace Polymer
 		 * 根据广告位，删除aUPSDK的Icon广告
 		 * @param cpPlaceId: Icon广告位标识符
 		 */
-		public void removeIconAd (string cpPlaceId)
-		{
+		public void removeIconAd (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call removeIcon(), the param cpPlaceId can't be null. ");
 				return;
@@ -853,15 +838,13 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			removeIcon(cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_RemoveIconAd, cpPlaceId);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_RemoveIconAd, cpPlaceId);
 			}
 			#endif
 		}
 
-		public void showBannerAdAtBottom (string cpPlaceId)
-		{
+		public void showBannerAdAtBottom (string cpPlaceId) {
 			if (cpPlaceId == null) {
 				Debug.Log ("===> call showBannerAdAtBottom(), the param cpPlaceId can't be null. ");
 				return;
@@ -869,35 +852,29 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			showBannerBottom (cpPlaceId);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_ShowBottomBanner, cpPlaceId);
 			}
 			#endif
 		}
 
-		public void onBackPressed ()
-		{
+		public void onBackPressed () {
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_OnBackPressed);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_OnBackPressed);
 			}
 			#endif
 		}
 
-		public void OnApplicationFocus (bool hasfoucus)
-		{
+		public void OnApplicationFocus (bool hasfoucus) {
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_OnApplicationFocus, hasfoucus);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_OnApplicationFocus, hasfoucus);
 			}
 			#endif
 		}
 
-		public void showRewardDebugView ()
-		{
+		public void showRewardDebugView () {
 			#if UNITY_IOS && !UNITY_EDITOR
 				showRewardDebugController ();
 			#elif   UNITY_ANDROID && !UNITY_EDITOR
@@ -908,16 +885,14 @@ namespace Polymer
 			#endif
 		}
 
-		public void showInterstitialDebugView ()
-		{
+		public void showInterstitialDebugView () {
 			//
 			#if UNITY_IOS && !UNITY_EDITOR
 				showInterstitialDebugController();
 				//Debug.Log ("===>sorry, this function is not supported. ");
 			#elif  UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_ShowInterstitialDebugActivity);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_ShowInterstitialDebugActivity);
 			}
 			#endif
 		}
@@ -927,9 +902,8 @@ namespace Polymer
 			#if UNITY_IOS && !UNITY_EDITOR
 			return isLogOpened();
 			#elif UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			return jc.CallStatic<bool> (JavaClassStaticMethod_IsLogOpened);
+			if (jc != null) {
+				return jc.CallStatic<bool> (JavaClassStaticMethod_IsLogOpened);
 			}
 			return false;
 			#else
@@ -940,31 +914,55 @@ namespace Polymer
 		public void setIsChild (bool isChild)
 		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
+			if (jc != null) {
 				jc.CallStatic (JavaClassStaticMethod_SetIsChild, isChild);
 			}
 			#endif
 		}
 
-		public void setBirthday (int year, int month)
+	    public bool getIsChild ()
+		{
+            #if UNITY_IOS && !UNITY_EDITOR
+				return false;
+            #elif UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) {
+				return	jc.CallStatic<bool> (JavaClassStaticMethod_GetIsChild);
+			}
+			return false;
+            #else
+            return false;
+            #endif
+
+        }
+
+        public void setBirthday (int year, int month)
 		{
 			#if UNITY_ANDROID && !UNITY_EDITOR
-			if (jc != null) 
-			{
-			jc.CallStatic (JavaClassStaticMethod_SetBirthday, year, month);
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_SetBirthday, year, month);
 			}
 			#endif
 		}
 
-		//		private void showBannerAd(string cpPlaceId, int type) {
-		//			#if UNITY_IOS //&& !UNITY_EDITOR
-		//			showBanner(cpPlaceId, type);
-		//			#elif UNITY_ANDROID && !UNITY_EDITOR
-		//
-		//			#endif
-		//		}
+		public void setUpAdjustID(string ajid) {
 
+			#if UNITY_IOS && !UNITY_EDITOR
+				adjustIDByUpIos(ajid);
+			#elif  UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_SetAdjustID, ajid);
+			}
+			#endif
+		}
 
+		public void setUpAppsflyerUID(string uid) {
+			#if UNITY_IOS && !UNITY_EDITOR
+				appsflyerUIDByUpIos(uid);
+			#elif  UNITY_ANDROID && !UNITY_EDITOR
+			if (jc != null) {
+				jc.CallStatic (JavaClassStaticMethod_SetAppsflyerUID, uid);
+			}
+			#endif
+		}
 	}
 }

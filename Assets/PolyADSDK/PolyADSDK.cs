@@ -28,16 +28,7 @@ namespace Polymer
 		public static Action<string, string> OldBannerDidClickCallback = null;
 		public static Action<string, string> OldBannerDidRemoveCallback = null;
 
-		//public static Action<OldAccessPrivacyInfoStatusEnum, string> OldAccessPrivacyInfoCallback = null;
-
-		#if UNITY_ANDROID && !UNITY_EDITOR
-		public static Action<string> OldExitAdDidShowCallback = null;
-		public static Action<string> OldExitAdDidClickCallback = null;
-		public static Action<string> OldExitAdDidClickMoreCallback = null;
-		public static Action<string> OldExitAdOnExitCallback = null;
-		public static Action<string> OldExitAdOnCancelCallback = null;
-
-		#endif
+	
 
 	}
 

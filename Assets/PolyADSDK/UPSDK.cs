@@ -28,15 +28,6 @@ namespace Polymer
 		public static Action<string, string> UPIconDidLoadFailCallback = null;
 		public static Action<string, string> UPIconDidShowCallback = null;
 		public static Action<string, string> UPIconDidClickCallback = null;
-
-		#if UNITY_ANDROID && !UNITY_EDITOR
-		public static Action<string> UPExitAdDidShowCallback = null;
-		public static Action<string> UPExitAdDidClickCallback = null;
-		public static Action<string> UPExitAdDidClickMoreCallback = null;
-		public static Action<string> UPExitAdOnExitCallback = null;
-		public static Action<string> UPExitAdOnCancelCallback = null;
-
-		#endif
 	}
 }
 

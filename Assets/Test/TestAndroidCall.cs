@@ -179,7 +179,7 @@ public class TestAndroidCall : MonoBehaviour {
 
 			//text.text = PolyADSDK.testCall ();
 			
-			string tt = PolyADSDK.initPolyAdSDK (UPConstant.SDKZONE_FOREIGN);
+			string tt = PolyADSDK.initUpAdSdk("873dec80afb8","0",0);
 			UPSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
 			if (tt != null) {
@@ -281,6 +281,15 @@ public class TestAndroidCall : MonoBehaviour {
 
 	private void actionForInterstitialDidClose(string placeId, string msg) {
 		Debug.Log ("===> actionForInterstitialDidClose Callback at: " + placeId);
+	}
+
+   public void setIsChild() {
+		Debug.Log ("===> set isChild: ");
+        PolyADSDK.setIsChild(true);
+	}
+
+	public void getIsChild() {
+		Debug.Log ("===> getIsChild result is: " + PolyADSDK.getIsChild());
 	}
 
 	//获取所有路径
