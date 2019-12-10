@@ -446,7 +446,7 @@ namespace Polymer
          * Version 3008.1 and above support this method
          *
         */
-		public static bool getIsChild ()
+		public static bool isChild ()
 		{
 			if (null == polyCall) {
 				polyCall = new PolyADCall ();

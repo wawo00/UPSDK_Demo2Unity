@@ -289,7 +289,7 @@ public class TestAndroidCall : MonoBehaviour {
 	}
 
 	public void getIsChild() {
-		Debug.Log ("===> getIsChild result is: " + PolyADSDK.getIsChild());
+		Debug.Log ("===> getIsChild result is: " + PolyADSDK.isChild());
 	}
 
 	//获取所有路径
