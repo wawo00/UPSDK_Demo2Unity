@@ -1,14 +1,14 @@
-using System;
+ using System;
 
 namespace Polymer
 {
 	public class PolyBaseApi
 	{
 		// 插件版本号
-		private readonly static string Version_Of_Ios_In_Plugin = "3101.1";
+		private readonly static string Version_Of_Ios_In_Plugin = "3103.1";
 
-		private readonly static string Version_Of_Android_In_Plugin = "3101.0";
-		private readonly static string Version_Of_Plugin = "3101.1";
+		private readonly static string Version_Of_Android_In_Plugin = "3103.1";
+		private readonly static string Version_Of_Plugin = "3103.1";
 	
 
 		private static bool _sInited;
@@ -34,11 +34,11 @@ namespace Polymer
 		}
 
 		/*
-		 * 初始化upltv的聚合广告
+		 * 初始化聚合广告
 		 * 即使多次调用，此方法也仅会初始化一次 
-		 * @param androidAppKey upltv为android应用分配的appkey，android应用必填(无android应用时，此参数须填入"android")
-		 * @param iosAppKey     upltv为ios应用分配的appkey，ios应用必填(无ios应用时，此参数须填入"ios")
-		 * @param iosZone       upltv为ios应用定义的发行地区(0，海外；1，中国大陆；2，根据IP自动定位区域), 无ios应用时须填入0
+		 * @param androidAppKey android应用分配的appkey，android应用必填(无android应用时，此参数须填入"android")
+		 * @param iosAppKey     ios应用分配的appkey，ios应用必填(无ios应用时，此参数须填入"ios")
+		 * @param iosZone       ios应用定义的发行地区(0，海外；1，中国大陆；2，根据IP自动定位区域), 无ios应用时须填入0
 		 * 具体引用：UPConstant.SDKZONE_FOREIGN(海外)，UPConstant.SDKZONE_AUTO(全球，根据IP自动定位区域)，UPConstant.SDKZONE_CHINA(中国大陆)
 		 */
 		public static string initUpAdSdk (string androidAppKey, string iosAppKey, int iosZone) {
@@ -53,7 +53,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 初始化upltv的聚合广告abtest配置
+		 * 初始化聚合广告abtest配置
 		 * 
 		 */
 		public static void initAbtConfigJson (string gameAccountId, bool completeTask,
@@ -65,7 +65,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 获取upltv的聚合广告abtest配置
+		 * 获取聚合广告abtest配置
 		 * 返回结果为Json字符串，可能为null
 		 * 
 		 */
@@ -83,7 +83,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 判断upltv的插屏广告是否填充成功，此方法可用于检查广告是否可以展示
+		 * 判断插屏广告是否填充成功，此方法可用于检查广告是否可以展示
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 返回结果为bool值
 		 * 
@@ -96,7 +96,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 判断upltv的激励视屏广告是否填充成功，此方法可用于检查广告是否可以展示
+		 * 判断激励视屏广告是否填充成功，此方法可用于检查广告是否可以展示
 		 * 返回结果为bool值
 		 * 
 		 */
@@ -108,7 +108,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的插屏广告
+		 * 用于展示插屏广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * @deprecated 方法名拼写错误
 		 * 建议使用showInterstitialAd()
@@ -120,7 +120,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的插屏广告
+		 * 用于展示插屏广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 用于替换showIntersitialAd()
 		 */
@@ -131,7 +131,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的激励视屏广告
+		 * 用于展示激励视屏广告
 		 * @param cpCustomId，用户自定义广告位，区分收益来源，不能为空，否则广告无法显示
 		 */
 		public static void showRewardAd (string cpCustomId) {
@@ -141,7 +141,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 增加对upltv的激励视屏广告加载的回调接口
+		 * 增加对激励视屏广告加载的回调接口
 		 * @param cpPlaceId: 第一个参数，插屏广告位标识符，不能为空或null
 		 * @param success 第二个参数，加载成功后的回调
 		 * @param fail 第三个参数，加载失败后的回调
@@ -158,7 +158,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 增加对upltv的激励视屏广告加载的回调接口
+		 * 增加对激励视屏广告加载的回调接口
 		 * @param success 第一个参数，加载成功后的回调
 		 * @param fail 第二个参数，加载失败后的回调
 		 * 
@@ -174,7 +174,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的Banner广告
+		 * 用于展示Banner广告
 		 * 此类广告将自动展现在当前应用界面的顶部
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
@@ -186,7 +186,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的Banner广告
+		 * 用于展示Banner广告
 		 * 此类广告将自动展现在当前应用界面的底部
 		 * @param cpPlaceId: 插屏广告位标识符
 		 * 
@@ -220,7 +220,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 根据广告位，删除upltv的Banner广告
+		 * 根据广告位，删除Banner广告
 		 * @param cpPlaceId: 插屏广告位标识符
 		 */
 		public static void removeBannerAdAt (string cpPlaceId) {
@@ -255,9 +255,9 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于向upltv设置安卓平台Manifest中定义的PackageName
+		 * 用于设置安卓平台Manifest中定义的PackageName
 		 * Manifest中定义的PackageName与最终包名是不一样，为了避免admob的广告无法显示
-		 * 在此情况下，请向upltv正确配置Manifest中定义的PackageName
+		 * 在此情况下，请正确配置Manifest中定义的PackageName
 		 * 自2031版本，adomb不再要求调用此方法
 		 * 对于ios平台，请忽略此方法
 		 */
@@ -281,7 +281,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的激励视屏广告调试界面
+		 * 用于展示激励视屏广告调试界面
 		 * supported from 2028
 		 */
 		public static void showRewardDebugView () {
@@ -291,7 +291,7 @@ namespace Polymer
 		}
 
 		/*
-		 * 用于展示upltv的插屏广告调试界面
+		 * 用于展示插屏广告调试界面
 		 * supported from 2028
 		 */
 		public static void showInterstitialDebugView () {
@@ -308,11 +308,11 @@ namespace Polymer
 
 		/**
      	* 满足需求：不希望在初始化自动加载广告，且要求根据游戏自主选择合适的时机进行广告加载
-     	* 运行条件：当sdk默认禁用广告自动加载的功能，且upltv后台云配也关闭此功能时
+     	* 运行条件：当sdk默认禁用广告自动加载的功能，且聚合广告后台云配也关闭此功能时
      	* 如果以上条件不成立，即使调用以下方法，SDK也会自动忽略
      	* supported from 3002
      	*/
-		public static void loadupltvAdsByManual () {
+		public static void loadAdsByManual () {
 			if (polyCall != null) {
 				polyCall.loadUpAdsByManual ();
 			}
@@ -344,25 +344,47 @@ namespace Polymer
      	* 弹出授权窗口，向用户说明重要数据收集的情况并询问用户是否同意授权
      	* 如果用户拒绝授权将放弃相关数据的收集
      	* @param callback
-     	* Version 3003 and above support this method
+     	* @param regionStatus
+     	* Version 3103 and above support this method
      	*/
-		public static void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback) {
-			if (polyCall == null) {
+		public static void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback,UPConstant.PrivacyUserRegionStatus regionStatus) {
+            int status = 0;
+            if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
-			polyCall.notifyAccessPrivacyInfoStatus (callback);
+            switch (regionStatus)
+            {
+                case UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusEU:
+                    {
+                        status = 1;
+                        break;
+                    }
+                case UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusCA:
+                    {
+                        status = 2;
+                        break;
+                    }
+                default:
+                    {
+                        status = 0;
+                        break;
+                    }
+            }
+
+            polyCall.notifyAccessPrivacyInfoStatus (callback, status);
 		}
 
 		/**
      	* 外部进行GDPR授权时，将用户授权结果同步到UPSDK时，调用此方法
      	* @param enumValue
-     	* Version 3003 and above support this method
+     	* @param regionStatus
+     	* Version 3103 and above support this method
      	*/
-		public static void updateAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum enumValue) {
+		public static void updateAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum enumValue,UPConstant.PrivacyUserRegionStatus regionStatus) {
 			if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
-			polyCall.setAccessPrivacyInfoStatus (enumValue);
+			polyCall.setAccessPrivacyInfoStatus (enumValue,regionStatus);
 		}
 
 		/**
@@ -377,16 +399,17 @@ namespace Polymer
 			return polyCall.getAccessPrivacyInfoStatus ();
 		}
 
+		
 		/**
-     	* 判断用户是否属于欧盟地区
+     	* 判断用户所在区域
      	* 异步回调
      	* Version 3003 and above support this method
      	*/
-		public static void isEuropeanUnionUser (Action<bool, string> callback) {
-			if (polyCall == null) {
+		public static void checkUserAreaRegion(Action<UPConstant.PrivacyUserRegionStatus, string> callback){
+	        if (polyCall == null) {
 				polyCall = new PolyADCall ();
 			}
-			polyCall.isEuropeanUnionUser (callback);
+			polyCall.checkUserAreaRegion (callback);
 		}
 
 

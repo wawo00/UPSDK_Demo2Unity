@@ -1,23 +1,30 @@
 # 不做预校验，preverify是proguard的四个步骤之一，Android不需要preverify，去掉这一步能够加快混淆速度。
 -dontpreverify
 -ignorewarnings
--keep class com.up.ads.** {*;}
--keep interface com.up.ads.** {*;}
--keep class com.up.channel.** { *; }
+-keep class com.openup.sdk.* {*;}
+-keep interface com.openup.sdk.* {*;}
 
--keep class com.sm.up.decode.** {*;}
--keep interface com.sm.up.decode.** {*;}
 -keep class com.sm.avid.decode.** {*;}
 -keep interface com.sm.avid.decode.** {*;}
 
--keep class com.statistics.channel.* {*;}
+-keep class com.statistics.channel.** {*;}
 -keep class com.aly.analysis.sdk.api.* {*;}
+-keep class com.aly.sdk.* {*;}
+-keep class com.aly.analysis.analysiscore.* {*;}
+
 
 -keepclasseswithmembernames class * {
     native <methods>;
 }
 
--dontwarn com.up.**
+-keep class com.openup.sdk.unity.OpenUpPolyProxy {*;}
+-keep class com.openup.sdk.unity.OpenUpBaseProxy {*;}
+-keep class com.openup.sdk.cocoslua.* {*;}
+-keep class com.openup.sdk.cocosjs.* {*;}
+-keep class com.openup.sdk.cocoscpp.* {*;}
+-keep class com.openup.sdk.layajs.** {*;}
+
+-dontwarn com.openup.**
 -keep class com.statistics.channel.* {*;}
 -keep class com.google.ads.mediation.** {*;}
 -dontwarn com.google.ads.mediation.**
@@ -110,11 +117,18 @@
 # vungle end
 
 # unity
+# Keep filenames and line numbers for stack traces
 -keepattributes SourceFile,LineNumberTable
 -keepattributes JavascriptInterface
--keep class android.webkit.JavascriptInterface {*;}
--keep class com.unity3d.ads.** {*;}
--keep class com.unity3d.services.** {*;}
+-keep class android.webkit.JavascriptInterface {
+   *;
+}
+-keep class com.unity3d.ads.** {
+   *;
+}
+-keep class com.unity3d.services.** {
+   *;
+}
 -dontwarn com.google.ar.core.**
 # unity end
 
@@ -133,11 +147,6 @@
 # playable end
 
 # ironsource
--keep class com.ironsource.mediationsdk.IronSource
--keep class com.moat.** { *; }
--dontwarn com.ironsource.mediationsdk.**
--dontwarn com.ironsource.adapters.**
--dontwarn com.moat.**
 -keepclassmembers class com.ironsource.sdk.controller.IronSourceWebView$JSInterface {
     public *;
 }
@@ -147,11 +156,12 @@
 -keep public class com.google.android.gms.ads.** {
    public *;
 }
--keep public class com.google.ads.** {
-   public *;
-}
--keep class com.ironsource.adapters.** { *;
-}
+-keep class com.ironsource.** { *;}
+-keep class com.moat.** { *;}
+
+-dontwarn com.ironsource.**
+-dontwarn com.moat.**
+-keep class com.moat.** { public protected private *; }
 # ironsource end
 
 # vk
@@ -216,3 +226,14 @@
 #eventbus end
 #chartboost_new end
 
+# mintegral
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.mintegral.** {*;}
+-keep interface com.mintegral.** {*;}
+-keep class android.support.v4.** { *; }
+-dontwarn com.mintegral.**
+-keep class **.R$* { public static final int mintegral*; }
+-keep class com.alphab.** {*; }
+-keep interface com.alphab.** {*; }
+# mintegral end

@@ -65,16 +65,13 @@ namespace Polymer
 			private static extern void loadAdsByManual();
 
 			[DllImport("__Internal")]
-			private static extern void updateAccessPrivacyInfoStatus(int value);
+			private static extern void updateAccessPrivacyInfoStatus(int value,int regionStatus);
 
 			[DllImport("__Internal")]
 			private static extern void requestAuthorizationWithAlert(string gameName, string funName);
 
 			[DllImport("__Internal")]
 			private static extern int getCurrentAccessPrivacyInfoStatus();
-
-			[DllImport("__Internal")]
-			private static extern void checkIsEuropeanUnionUser(string gameName, string funName);
 
 			[DllImport("__Internal")]
 			private static extern void reportRDShowDid(string msg);
@@ -123,7 +120,7 @@ namespace Polymer
 		
 		#elif UNITY_ANDROID && !UNITY_EDITOR
 			private static AndroidJavaClass jc = null;
-			private readonly static string JavaClassName = "com.up.ads.unity.PolyProxy";
+			private readonly static string JavaClassName = "com.openup.sdk.unity.OpenUpPolyProxy";
 			private readonly static string JavaClassStaticMethod_InitSDK = "initSDK";
 			private readonly static string JavaClassStaticMethod_ShowTopBanner = "showTopBanner";
 			private readonly static string JavaClassStaticMethod_ShowBottomBanner = "showBottomBanner";
@@ -150,7 +147,7 @@ namespace Polymer
 			private readonly static string JavaClassStaticMethod_updateAccessPrivacyInfoStatus = "updateAccessPrivacyInfoStatus";
 			private readonly static string JavaClassStaticMethod_getAccessPrivacyInfoStatus = "getAccessPrivacyInfoStatus";
 			private readonly static string JavaClassStaticMethod_notifyAccessPrivacyInfoStatus = "notifyAccessPrivacyInfoStatus";
-			private readonly static string JavaClassStaticMethod_IsEuropeanUnionUser = "isEuropeanUnionUser";
+			private readonly static string JavaClassStaticMethod_CheckUserAreaRegion = "checkUserAreaRegion";
 			private readonly static string JavaClassStaticMethod_SetTopBannerTopPadding = "setTopBannerTopPadding";
 			private readonly static string JavaClassStaticMethod_SetCustomerId = "setCustomerId";
 			
@@ -449,8 +446,8 @@ namespace Polymer
 											iosAppKey,
 											iosZone);
 
-				if (UPSDK.UPSDKInitFinishedCallback != null) {
-					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
+				if (OpenUpSDK.UPSDKInitFinishedCallback != null) {
+					OpenUpSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
 				}
 				else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
 					PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Ios Sdk Finish");
@@ -473,8 +470,8 @@ namespace Polymer
 													PolyADSDKGameObject.GameObject_Callback_Name, 
 													PolyADSDKGameObject.Java_Callback_Function,
 													androidAppKey);
-				if (UPSDK.UPSDKInitFinishedCallback != null) {
-					UPSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
+				if (OpenUpSDK.UPSDKInitFinishedCallback != null) {
+					OpenUpSDK.UPSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
 				}
 				else if (PolyADSDK.OldSDKInitFinishedCallback != null) {
 					PolyADSDK.OldSDKInitFinishedCallback (true, "UPSDK Init Android Sdk Finish");
@@ -599,32 +596,34 @@ namespace Polymer
 
 		}
 
-		public void isEuropeanUnionUser (Action<bool, string> callback) {
-			PolyADSDKGameObject.getInstance ().setCheckEuropeanUserCallback (callback);
+
+		public void checkUserAreaRegion (Action<UPConstant.PrivacyUserRegionStatus, string> callback) {
+			PolyADSDKGameObject.getInstance ().setCheckUserAreaRegion (callback);
 			#if UNITY_IOS && !UNITY_EDITOR
 				checkIsEuropeanUnionUser(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) {
-				jc.CallStatic (JavaClassStaticMethod_IsEuropeanUnionUser, PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
+				jc.CallStatic (JavaClassStaticMethod_CheckUserAreaRegion, PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			}
 			#endif
 		}
 
-		public void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback) {
+		public void notifyAccessPrivacyInfoStatus (Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string> callback, int regionStatus) {
 			PolyADSDKGameObject.getInstance ().setAccessPrivacyInformationCallback (callback);
 
 			#if UNITY_IOS && !UNITY_EDITOR
 				requestAuthorizationWithAlert(PolyADSDKGameObject.GameObject_Callback_Name,PolyADSDKGameObject.Java_Callback_Function);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) {
-				jc.CallStatic (JavaClassStaticMethod_notifyAccessPrivacyInfoStatus, PolyADSDKGameObject.GameObject_Callback_Name, PolyADSDKGameObject.Java_Callback_Function);
+				jc.CallStatic (JavaClassStaticMethod_notifyAccessPrivacyInfoStatus, PolyADSDKGameObject.GameObject_Callback_Name, PolyADSDKGameObject.Java_Callback_Function, regionStatus);
 			}
 			#endif
 
 		}
 
-		public void setAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum value) {
+		public void setAccessPrivacyInfoStatus (UPConstant.UPAccessPrivacyInfoStatusEnum value,UPConstant.PrivacyUserRegionStatus regionStatus) {
 			int result = 0;
+			int status=0;
 			switch (value) {
 			case UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusAccepted:
 				{
@@ -642,11 +641,30 @@ namespace Polymer
 					break;
 				}
 			}
+
+			switch (regionStatus) {
+			case UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusEU:
+				{
+					status = 1;
+					break;
+				}
+			case UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusCA:
+				{
+					status = 2;
+					break;
+				}
+			default:
+				{
+					status = 0;
+					break;
+				}
+			}
+
 			#if UNITY_IOS && !UNITY_EDITOR
 				updateAccessPrivacyInfoStatus(result);
 			#elif UNITY_ANDROID && !UNITY_EDITOR
 			if (jc != null) {
-				jc.CallStatic (JavaClassStaticMethod_updateAccessPrivacyInfoStatus, result);
+				jc.CallStatic (JavaClassStaticMethod_updateAccessPrivacyInfoStatus, result,status);
 			}
 			#endif
 		}

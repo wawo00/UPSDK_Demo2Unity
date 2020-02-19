@@ -11,6 +11,12 @@ namespace Polymer
 			UPAccessPrivacyInfoStatusFailed  = 3
 		}
 
+		public enum PrivacyUserRegionStatus {
+			PrivacyUserRegionStatusNone   = 0,
+			PrivacyUserRegionStatusEU = 1,
+			PrivacyUserRegionStatusCA  = 2
+		}
+
 		public const int SDKZONE_FOREIGN = 0; //海外
 		public const int SDKZONE_CHINA = 1;   //中国大陆
 		public const int SDKZONE_AUTO = 2;    //根据ip自动判断

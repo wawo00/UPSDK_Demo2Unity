@@ -30,51 +30,51 @@ public class TestAndroidCall : MonoBehaviour {
 	public void onBtnIntertitialClick() 
 	{
 
-		UPSDK.showIntersitialAd("sample_inter");
+		OpenUpSDK.showIntersitialAd("sample_inter");
 	}
 
 	public void onBtnIntertitial_CCC_Click()
 	{
-		UPSDK.showIntersitialAd("sample_inter");
+        OpenUpSDK.showIntersitialAd("sample_inter");
 	}
 
 	public void onBtnReward_aaa_Click()
 	{
-		UPSDK.showRewardAd("rewarded_video");
+        OpenUpSDK.showRewardAd("rewarded_video");
 	}
 
 	public void onBtnBanner_Top_Click()
 	{
-         //sample_banner_inland is placementid		
-		UPSDK.showBannerAdAtTop("sample_banner");
+        //sample_banner_inland is placementid		
+        OpenUpSDK.showBannerAdAtTop("sample_banner");
 		
 	}
 
 	public void onBtnBanner_Bottom_Click()
 	{
-    	UPSDK.showBannerAdAtBottom("sample_banner");
+        OpenUpSDK.showBannerAdAtBottom("sample_banner");
 
 	}
 
 	public void onBtnBanner_Top_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+        OpenUpSDK.removeBannerAdAt ("sample_banner");
 	}
 
 	public void onBtnBanner_Bottom_Del_Click()
 	{
-		UPSDK.removeBannerAdAt ("sample_banner");
+        OpenUpSDK.removeBannerAdAt ("sample_banner");
 	}
 
 	public void onBtn_ClickForIntsLoadCallback() {
-		UPSDK.setIntersitialLoadCallback ("sample_inter", 
+        OpenUpSDK.setIntersitialLoadCallback ("sample_inter", 
 			new System.Action<string, string>(actionForIntsLoadSuccess),
 			new System.Action<string, string>(actionForIntsLoadFail) 
 		);
 	}
 
 	public void onBtn_ClickForRewardLoadCallback() {
-        UPSDK.setRewardVideoLoadCallback ( 
+        OpenUpSDK.setRewardVideoLoadCallback ( 
 			new System.Action<string, string>(actionForRewardLoadSuccess),
 			new System.Action<string, string>(actionForRewardLoadFail) 
 		);
@@ -84,7 +84,7 @@ public class TestAndroidCall : MonoBehaviour {
 	{
 
 		if (TEST_AD) {
-			UPSDK.onBackPressed ();
+            OpenUpSDK.onBackPressed ();
 		}
 
 	}
@@ -95,27 +95,45 @@ public class TestAndroidCall : MonoBehaviour {
 
 	public void onBtnInitABConfig_Click()
 	{
-		UPSDK.initAbtConfigJson("gameAccountId", true, 1234, "324000", "gender", 33, new string[]{"This is first elements.", "Then is the second one.", "The last one."});
+        OpenUpSDK.initAbtConfigJson("gameAccountId", true, 1234, "324000", "gender", 33, new string[]{"This is first elements.", "Then is the second one.", "The last one."});
 	}
 
 	public void onBtnShowRewardView_Click() {
-		UPSDK.showRewardDebugView();
+        OpenUpSDK.showRewardDebugView();
 	}
 
 	public void onBtnShowInterstitialView_Click() {
-		UPSDK.showInterstitialDebugView();
+        OpenUpSDK.showInterstitialDebugView();
 	}
 
 	public void onBtnGetABConfig_Click()
 	{
-		string r = UPSDK.getAbtConfig ("freeCoins");
+		string r = OpenUpSDK.getAbtConfig ("freeCoins");
 		Debug.Log ("==> onBtnGetABConfig_Click:" + r);
 	}
 
 	public void onBtnAutoInspect_Click()
 	{
-		UPSDK.autoOneKeyInspect ();
+        OpenUpSDK.autoOneKeyInspect ();
 	}
+    public void onBtnGDPR_Click()
+    {
+        // 初始化代码
+        UPConstant.UPAccessPrivacyInfoStatusEnum result = OpenUpSDK.getAccessPrivacyInfoStatus();
+        if (result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusUnkown
+            || result == UPConstant.UPAccessPrivacyInfoStatusEnum.UPAccessPrivacyInfoStatusFailed)
+        {
+            // 如未询问授权，先定位用户是否为欧盟地区
+            // isEuropeanUserCallback 异步回调对象
+            OpenUpSDK.checkUserAreaRegion(new Action<UPConstant.PrivacyUserRegionStatus, string>(actionUserRegionArea));
+
+        }
+        else
+        {
+             PolyADSDK.initUpAdSdk("873dec80afb8", "0", 0);
+        }
+
+    }
 	 
 	public void onBtnReadAssets_Click(){
 		string filePath = Application.streamingAssetsPath + "/avidly_android/js_ad_sdk_native.js";
@@ -148,26 +166,26 @@ public class TestAndroidCall : MonoBehaviour {
 
 		if (!inited) {
 
-           
-			UPSDK.UPSDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
 
-			UPSDK.UPInterstitialWillShowCallback=new System.Action<string, string>(actionForInterstitialWillShow);
-			UPSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
-			UPSDK.UPInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
-			UPSDK.UPInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
-			
+            OpenUpSDK.UPSDKInitFinishedCallback = new System.Action<bool, string>(actionForSdkInitFinish);
 
-			UPSDK.UPBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
-			UPSDK.UPBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
-			UPSDK.UPBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
+            OpenUpSDK.UPInterstitialWillShowCallback=new System.Action<string, string>(actionForInterstitialWillShow);
+            OpenUpSDK.UPInterstitialDidShowCallback = new System.Action<string, string>(actionForInterstitialDidShow);
+            OpenUpSDK.UPInterstitialDidClickCallback = new System.Action<string, string>(actionForInterstitialDidClick);
+            OpenUpSDK.UPInterstitialDidCloseCallback = new System.Action<string, string>(actionForInterstitialDidClose);
 
 
-            UPSDK.UPRewardWillOpenCallback=new  System.Action<string, string>(actionForSdkRewardWillOpen);
-			UPSDK.UPRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
-			UPSDK.UPRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
-			UPSDK.UPRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
-			UPSDK.UPRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
-			UPSDK.UPRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
+            OpenUpSDK.UPBannerDidShowCallback = new System.Action<string, string>(actionForSdkBannerDidShow);
+            OpenUpSDK.UPBannerDidClickCallback = new System.Action<string, string>(actionForSdkBannerDidClick);
+            OpenUpSDK.UPBannerDidRemoveCallback = new System.Action<string, string>(actionForSdkBannerRemove);
+
+
+            OpenUpSDK.UPRewardWillOpenCallback=new  System.Action<string, string>(actionForSdkRewardWillOpen);
+            OpenUpSDK.UPRewardDidOpenCallback = new System.Action<string, string>(actionForSdkRewardDidOpen);
+            OpenUpSDK.UPRewardDidClickCallback = new System.Action<string, string>(actionForSdkRewardDidClick);
+            OpenUpSDK.UPRewardDidCloseCallback = new System.Action<string, string>(actionForSdkRewardDidClose);
+            OpenUpSDK.UPRewardDidGivenCallback = new System.Action<string, string>(actionForSdkRewardDidGiven);
+            OpenUpSDK.UPRewardDidAbandonCallback = new System.Action<string, string>(actionForSdkRewardDidAbandon);
 			
 		}
 
@@ -179,8 +197,8 @@ public class TestAndroidCall : MonoBehaviour {
 
 			//text.text = PolyADSDK.testCall ();
 			
-			string tt = PolyADSDK.initUpAdSdk("873dec80afb8","0",0);
-			UPSDK.runCallbackAfterAppFocus (true);
+			string tt = PolyADSDK.initUpAdSdk("a399eb362d3c", "0",0);
+            OpenUpSDK.runCallbackAfterAppFocus (true);
 			Debug.Log ("initPolyAdSDK ====> " + tt);
 			if (tt != null) {
 				text.text = tt;
@@ -283,7 +301,23 @@ public class TestAndroidCall : MonoBehaviour {
 		Debug.Log ("===> actionForInterstitialDidClose Callback at: " + placeId);
 	}
 
-   public void setIsChild() {
+    private void actionUserRegionArea(UPConstant.PrivacyUserRegionStatus regionStatus,string msg)
+    {
+            regionStatus = UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusEU;
+            OpenUpSDK.notifyAccessPrivacyInfoStatus(new Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string>(accessPrivacyInforCallback), regionStatus);
+            Debug.Log("===> actionForInterstitialDidClose Callback at: " + regionStatus);
+    }
+
+    private void accessPrivacyInforCallback(UPConstant.UPAccessPrivacyInfoStatusEnum result, string msg)
+    {
+        // 打印日志
+        Debug.Log("===> accessPrivacyInforCallback Event result: " + result + "," + msg);
+        // result 用户授权的结果
+        // 不论结果如何，均需初始化 OpenUpSDK
+        PolyADSDK.initUpAdSdk("a399eb362d3c", "0", 0);
+    }
+
+    public void setIsChild() {
 		Debug.Log ("===> set isChild: ");
         PolyADSDK.setIsChild(true);
 	}

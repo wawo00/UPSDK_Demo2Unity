@@ -2,7 +2,7 @@
 
 namespace Polymer
 {
-	public class UPSDK : PolyBaseApi
+	public class OpenUpSDK : PolyBaseApi
 	{
 		
 		public static Action<bool, string> UPSDKInitFinishedCallback = null;
