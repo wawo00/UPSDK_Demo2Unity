@@ -305,7 +305,7 @@ public class TestAndroidCall : MonoBehaviour {
     {
             regionStatus = UPConstant.PrivacyUserRegionStatus.PrivacyUserRegionStatusEU;
             OpenUpSDK.notifyAccessPrivacyInfoStatus(new Action<UPConstant.UPAccessPrivacyInfoStatusEnum, string>(accessPrivacyInforCallback), regionStatus);
-            Debug.Log("===> actionForInterstitialDidClose Callback at: " + regionStatus);
+            Debug.Log("===> actionUserRegionArea Callback at: " + regionStatus);
     }
 
     private void accessPrivacyInforCallback(UPConstant.UPAccessPrivacyInfoStatusEnum result, string msg)
